@@ -1,5 +1,5 @@
 import express from 'express';
-import mailRouter from '../src/route/mailRoute'
+import mailRouter from './infra/api/route/MailRoute'
 const app = express();
 
 

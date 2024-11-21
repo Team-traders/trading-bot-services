@@ -1,17 +1,11 @@
 import express, { Request, Response } from 'express';
-import { sendMail } from '../service/emailService'; // Import de la fonction depuis le service
+import { sendMail } from '../service/EmailService'; // Import de la fonction depuis le service
 
 const router = express.Router();
 
 router.get('/', (req: Request, res: Response) => {
   res.send('hello');
 });
-
-//{
-//  "to": "samy1fergui@gmail.com",
-//  "subject": "Test d'envoi",
-//  "text": "Bonjour Samy, ceci est un test."
-//}
 
 router.post('/send-email', async (req: Request, res: any ) => {
   const { to, subject, text } = req.body;

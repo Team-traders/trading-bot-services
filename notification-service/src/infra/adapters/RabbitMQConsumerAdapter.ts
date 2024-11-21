@@ -3,24 +3,30 @@ import { EventConsumer } from "../ports/EventConsumer";
 import amqp, { Channel, Connection } from 'amqplib';
 
 export class RabbitMQConsumerAdapter implements EventConsumer {
-    private channel : Channel | undefined
-    private connection : Connection | undefined
 
     async consume(queuName: string, callback: (event: any) => Promise<void>): Promise<void> {
 
         try {
             const connection = await amqp.connect('amqp://localhost');
+            console.log(connection)
             const channel = await connection.createChannel();
+            console.log(channel)
     
             // Assurer que la queue existe
             await channel.assertQueue(queuName, rabbitMQConfig.options);
             console.log(`Listening to queue: ${queuName}`);
             
-            this.channel?.consume(queuName, async (msg) => {
+            channel.consume('Test',  async (msg) => {
                 if (msg) {
+                    console.log("youpi")
                     const messageContent = JSON.parse(msg.content.toString());
                     await callback(messageContent);
-                    this.channel!.ack(msg);
+                    channel!.ack(msg);
+                    console.log("recuuuuu")
+                }
+
+                else {
+                    console.log("olala")
                 }
     
             })
@@ -30,9 +36,6 @@ export class RabbitMQConsumerAdapter implements EventConsumer {
 
     }
 
-    async stop(): Promise<void> {
-        if (this.channel) await this.channel.close();
-        if (this.connection) await this.connection.close();
-    }
+
     
 }

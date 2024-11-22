@@ -1,4 +1,5 @@
-import { Notification } from "../../core/entities /Notification";
+import { MailOption } from "../../core/entities/MailOption";
+import { Notification } from "../../core/entities/Notification";
 import { NotificationSender } from "../ports/NotificationSender";
 import nodemailer from 'nodemailer';
 
@@ -15,13 +16,8 @@ private transporter = nodemailer.createTransport({
     },
   });
 
-    async send(notification: Notification): Promise<void> {
-        const mailOptions = {
-            from: 'hello@demomailtrap.com', // Adresse de l'expéditeur
-            to : notification.recepient, // Adresse du destinataire
-            subject : "noreply", // Sujet
-            text : notification.message // Contenu de l'email
-          };
+    async send(mailOption : MailOption): Promise<void> {
+        const mailOptions = mailOption;
         
           try {
             const info = await this.transporter.sendMail(mailOptions);

@@ -1,5 +1,5 @@
-import { Notification } from "../../core/entities /Notification";
+import { MailOption } from "../../core/entities/MailOption";
 
 export  interface NotificationSender {
-    send(notification : Notification) : Promise<void>;
+    send(mailOption : MailOption) : Promise<void>;
 }

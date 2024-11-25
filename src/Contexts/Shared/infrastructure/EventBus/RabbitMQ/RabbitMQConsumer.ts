@@ -2,7 +2,7 @@ import { ConsumeMessage } from 'amqplib';
 import { DomainEvent } from '../../../domain/DomainEvent';
 import { DomainEventSubscriber } from '../../../domain/DomainEventSubscriber';
 import { DomainEventDeserializer } from '../DomainEventDeserializer';
-import { RabbitMqConnection } from './RabbitMQConnection';
+import { RabbitMqConnection } from './RabbitMqConnection';
 
 export class RabbitMQConsumer {
   private subscriber: DomainEventSubscriber<DomainEvent>;

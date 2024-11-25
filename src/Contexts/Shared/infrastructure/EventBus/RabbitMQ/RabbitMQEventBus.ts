@@ -4,7 +4,7 @@ import { DomainEventDeserializer } from '../DomainEventDeserializer';
 import { DomainEventFailoverPublisher } from '../DomainEventFailoverPublisher/DomainEventFailoverPublisher';
 import { DomainEventJsonSerializer } from '../DomainEventJsonSerializer';
 import { DomainEventSubscribers } from '../DomainEventSubscribers';
-import { RabbitMqConnection } from './RabbitMQConnection';
+import { RabbitMqConnection } from './RabbitMqConnection';
 import { RabbitMQConsumerFactory } from './RabbitMQConsumerFactory';
 import { RabbitMQqueueFormatter } from './RabbitMQqueueFormatter';
 
@@ -32,24 +32,13 @@ export class RabbitMQEventBus implements EventBus {
 
   async addSubscribers(subscribers: DomainEventSubscribers): Promise<void> {
     const deserializer = DomainEventDeserializer.configure(subscribers);
-    const consumerFactory = new RabbitMQConsumerFactory(
-      deserializer,
-      this.connection,
-      this.maxRetries,
-    );
+    const consumerFactory = new RabbitMQConsumerFactory(deserializer, this.connection, this.maxRetries);
 
     for (const subscriber of subscribers.items) {
       const queueName = this.queueNameFormatter.format(subscriber);
-      const rabbitMQConsumer = consumerFactory.build(
-        subscriber,
-        this.exchange,
-        queueName,
-      );
+      const rabbitMQConsumer = consumerFactory.build(subscriber, this.exchange, queueName);
 
-      await this.connection.consume(
-        queueName,
-        rabbitMQConsumer.onMessage.bind(rabbitMQConsumer),
-      );
+      await this.connection.consume(queueName, rabbitMQConsumer.onMessage.bind(rabbitMQConsumer));
     }
   }
 
@@ -60,12 +49,7 @@ export class RabbitMQEventBus implements EventBus {
         const content = this.toBuffer(event);
         const options = this.options(event);
 
-        await this.connection.publish({
-          exchange: this.exchange,
-          routingKey,
-          content,
-          options,
-        });
+        await this.connection.publish({ exchange: this.exchange, routingKey, content, options });
       } catch (error: any) {
         await this.failoverPublisher.publish(event);
       }
@@ -76,7 +60,7 @@ export class RabbitMQEventBus implements EventBus {
     return {
       messageId: event.eventId,
       contentType: 'application/json',
-      contentEncoding: 'utf-8',
+      contentEncoding: 'utf-8'
     };
   }
 

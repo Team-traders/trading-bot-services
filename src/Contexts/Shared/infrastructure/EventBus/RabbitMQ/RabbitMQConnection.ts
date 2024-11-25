@@ -17,9 +17,7 @@ export class RabbitMqConnection {
   }
 
   async exchange(params: { name: string }) {
-    return await this.channel?.assertExchange(params.name, 'topic', {
-      durable: true,
-    });
+    return await this.channel?.assertExchange(params.name, 'topic', { durable: true });
   }
 
   async queue(params: {
@@ -39,7 +37,7 @@ export class RabbitMqConnection {
       exclusive,
       durable,
       autoDelete,
-      arguments: args,
+      arguments: args
     });
     for (const routingKey of params.routingKeys) {
       await this.channel!.bindQueue(params.name, params.exchange, routingKey);
@@ -83,7 +81,7 @@ export class RabbitMqConnection {
       port,
       username,
       password,
-      vhost,
+      vhost
     });
 
     connection.on('error', (err: any) => {
@@ -104,23 +102,13 @@ export class RabbitMqConnection {
     exchange: string;
     routingKey: string;
     content: Buffer;
-    options: {
-      messageId: string;
-      contentType: string;
-      contentEncoding: string;
-      priority?: number;
-      headers?: any;
-    };
+    options: { messageId: string; contentType: string; contentEncoding: string; priority?: number; headers?: any };
   }) {
     const { routingKey, content, options, exchange } = params;
 
     return new Promise((resolve: Function, reject: Function) => {
-      this.channel!.publish(
-        exchange,
-        routingKey,
-        content,
-        options,
-        (error: any) => (error ? reject(error) : resolve()),
+      this.channel!.publish(exchange, routingKey, content, options, (error: any) =>
+        error ? reject(error) : resolve()
       );
     });
   }
@@ -147,36 +135,24 @@ export class RabbitMqConnection {
     const retryExchange = RabbitMQExchangeNameFormatter.retry(exchange);
     const options = this.getMessageOptions(message);
 
-    return await this.publish({
-      exchange: retryExchange,
-      routingKey: queue,
-      content: message.content,
-      options,
-    });
+    return await this.publish({ exchange: retryExchange, routingKey: queue, content: message.content, options });
   }
 
   async deadLetter(message: ConsumeMessage, queue: string, exchange: string) {
-    const deadLetterExchange =
-      RabbitMQExchangeNameFormatter.deadLetter(exchange);
+    const deadLetterExchange = RabbitMQExchangeNameFormatter.deadLetter(exchange);
     const options = this.getMessageOptions(message);
 
-    return await this.publish({
-      exchange: deadLetterExchange,
-      routingKey: queue,
-      content: message.content,
-      options,
-    });
+    return await this.publish({ exchange: deadLetterExchange, routingKey: queue, content: message.content, options });
   }
 
   private getMessageOptions(message: ConsumeMessage) {
-    const { messageId, contentType, contentEncoding, priority } =
-      message.properties;
+    const { messageId, contentType, contentEncoding, priority } = message.properties;
     const options = {
       messageId,
       headers: this.incrementRedeliveryCount(message),
       contentType,
       contentEncoding,
-      priority,
+      priority
     };
     return options;
   }

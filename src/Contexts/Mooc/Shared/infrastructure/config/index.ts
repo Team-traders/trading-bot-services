@@ -1,4 +1,5 @@
 import convict from 'convict';
+import path from 'path';
 
 const moocConfig = convict({
   env: {
@@ -13,38 +14,6 @@ const moocConfig = convict({
       format: String,
       env: 'MONGO_URL',
       default: 'mongodb://localhost:27017/mooc-backend-dev'
-    }
-  },
-  typeorm: {
-    host: {
-      doc: 'The database host',
-      format: String,
-      env: 'TYPEORM_HOST',
-      default: 'localhost'
-    },
-    port: {
-      doc: 'The database port',
-      format: Number,
-      env: 'TYPEORM_PORT',
-      default: 5432
-    },
-    username: {
-      doc: 'The database username',
-      format: String,
-      env: 'TYPEORM_USERNAME',
-      default: 'codely'
-    },
-    password: {
-      doc: 'The database password',
-      format: String,
-      env: 'TYPEORM_PASSWORD',
-      default: 'codely'
-    },
-    database: {
-      doc: 'The database name',
-      format: String,
-      env: 'TYPEORM_DATABASE',
-      default: 'mooc-backend-dev'
     }
   },
   rabbitmq: {
@@ -111,6 +80,9 @@ const moocConfig = convict({
   }
 });
 
-moocConfig.loadFile([__dirname + '/default.json', __dirname + '/' + moocConfig.get('env') + '.json']);
+moocConfig.loadFile([
+  path.join(__dirname, 'default.json'),
+  path.join(__dirname, `${moocConfig.get('env').trim()}.json`)
+]);
 
 export default moocConfig;

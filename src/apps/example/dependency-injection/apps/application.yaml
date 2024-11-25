@@ -1,0 +1,12 @@
+services:
+  Apps.Example.Backend.controllers.StatusGetController:
+    class: ../../controllers/StatusGetController
+    arguments: ['@Example.Shared.domain.QueryBus']
+
+  Apps.Example.Backend.controllers.CoursesPostController:
+    class: ../../controllers/CoursesPostController
+    arguments: ['@Example.Shared.domain.CommandBus']
+
+  Apps.Example.Backend.controllers.CoursesGetController:
+    class: ../../controllers/CoursesGetController
+    arguments: ['@Example.Shared.domain.QueryBus']

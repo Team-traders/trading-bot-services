@@ -9,7 +9,7 @@ export class DomainEventSubscribers {
     const subscriberDefinitions = container.findTaggedServiceIds('domainEventSubscriber') as Map<String, Definition>;
     const subscribers: Array<DomainEventSubscriber<DomainEvent>> = [];
 
-    subscriberDefinitions.forEach((value: Definition, key: String) => {
+    subscriberDefinitions.forEach((_value: Definition, key: String) => {
       const domainEventSubscriber = container.get<DomainEventSubscriber<DomainEvent>>(key.toString());
       subscribers.push(domainEventSubscriber);
     });

@@ -22,6 +22,6 @@ export class MongoCoursesCounterRepository extends MongoRepository<CoursesCounte
     const collection = await this.collection();
 
     const document = await collection.findOne<CoursesCounterDocument>({});
-    return document ? CoursesCounter.fromPrimitives({ ...document, id: document._id }) : null;
+    return document ? CoursesCounter.fromPrimitives({ ...document, id: document._id.toString() }) : null;
   }
 }

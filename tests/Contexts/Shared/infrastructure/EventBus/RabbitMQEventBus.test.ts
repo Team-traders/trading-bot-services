@@ -5,7 +5,7 @@ import { DomainEventSubscribers } from '../../../../../src/Contexts/Shared/infra
 import { RabbitMQConfigurer } from '../../../../../src/Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer';
 import { RabbitMqConnection } from '../../../../../src/Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection';
 import { RabbitMQConsumer } from '../../../../../src/Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConsumer';
-import { RabbitMQEventBus } from '../../../../../src/Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQEventBus';
+import { RabbitMQEventBus } from '../../../../../src/Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqEventBus';
 import { RabbitMQqueueFormatter } from '../../../../../src/Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter';
 import { CoursesCounterIncrementedDomainEventMother } from '../../../Mooc/CoursesCounter/domain/CoursesCounterIncrementedDomainEventMother';
 import { MongoEnvironmentArranger } from '../mongo/MongoEnvironmentArranger';
@@ -68,6 +68,7 @@ describe('RabbitMQEventBus test', () => {
     });
 
     afterEach(async () => {
+      if (!connection) return;
       await cleanEnvironment();
       await connection.close();
     });
@@ -129,18 +130,25 @@ describe('RabbitMQEventBus test', () => {
     });
 
     async function cleanEnvironment() {
+      if (!connection) return;
       await connection.deleteQueue(queueNameFormatter.format(dummySubscriber));
       await connection.deleteQueue(queueNameFormatter.formatRetry(dummySubscriber));
       await connection.deleteQueue(queueNameFormatter.formatDeadLetter(dummySubscriber));
     }
-
 
     async function assertDeadLetter(events: Array<DomainEvent>) {
       const deadLetterQueue = queueNameFormatter.formatDeadLetter(dummySubscriber);
       const deadLetterSubscriber = new DomainEventSubscriberDummy();
       const deadLetterSubscribers = new DomainEventSubscribers([dummySubscriber]);
       const deserializer = DomainEventDeserializer.configure(deadLetterSubscribers);
-      const consumer = new RabbitMQConsumer({ subscriber: deadLetterSubscriber, deserializer, connection, maxRetries: 3, queueName: deadLetterQueue, exchange });
+      const consumer = new RabbitMQConsumer({
+        subscriber: deadLetterSubscriber,
+        deserializer,
+        connection,
+        maxRetries: 3,
+        queueName: deadLetterQueue,
+        exchange
+      });
       await connection.consume(deadLetterQueue, consumer.onMessage.bind(consumer));
 
       await deadLetterSubscriber.assertConsumedEvents(events);

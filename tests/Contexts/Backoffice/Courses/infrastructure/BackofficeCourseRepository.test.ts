@@ -1,4 +1,4 @@
-import container from '../../../../../src/apps/backoffice/backend/dependency-injection';
+import container from '../../../../../src/apps/backoffice/dependency-injection';
 import { BackofficeCourse } from '../../../../../src/Contexts/Backoffice/Courses/domain/BackofficeCourse';
 import { BackofficeCourseRepository } from '../../../../../src/Contexts/Backoffice/Courses/domain/BackofficeCourseRepository';
 import { EnvironmentArranger } from '../../../Shared/infrastructure/arranger/EnvironmentArranger';
@@ -70,7 +70,7 @@ describe('#searchByCriteria', () => {
       BackofficeCourseMother.random()
     ];
     await Promise.all(courses.map(async course => repository.save(course)));
-    
+
     const result = await repository.matching(
       BackofficeCourseCriteriaMother.nameAndDurationContainsSortAscById('DDD', 'days')
     );

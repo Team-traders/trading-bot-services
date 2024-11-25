@@ -12,6 +12,7 @@ export class CreateBackofficeCourseOnCourseCreated implements DomainEventSubscri
 
   async on(domainEvent: CourseCreatedDomainEvent): Promise<void> {
     const { aggregateId, duration, name } = domainEvent;
+    console.log('boom.com');
 
     return this.creator.run(aggregateId, duration, name);
   }

@@ -1,7 +1,7 @@
-import { MotherCreator } from './MotherCreator';
+import { ObjectId } from 'mongodb';
 
 export class UuidMother {
   static random(): string {
-    return MotherCreator.random().datatype.uuid();
+    return new ObjectId().toHexString();
   }
 }

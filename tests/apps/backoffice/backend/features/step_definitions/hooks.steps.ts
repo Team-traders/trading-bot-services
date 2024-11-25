@@ -1,7 +1,7 @@
 import { AfterAll, BeforeAll } from 'cucumber';
-import { BackofficeBackendApp } from '../../../../../../src/apps/backoffice/backend/BackofficeBackendApp';
-import { ConfigureRabbitMQCommand } from '../../../../../../src/apps/backoffice/backend/command/ConfigureRabbitMQCommand';
-import container from '../../../../../../src/apps/backoffice/backend/dependency-injection';
+import { BackofficeBackendApp } from '../../../../../../src/apps/backoffice/BackofficeBackendApp';
+import { ConfigureRabbitMQCommand } from '../../../../../../src/apps/backoffice/command/ConfigureRabbitMQCommand';
+import container from '../../../../../../src/apps/backoffice/dependency-injection';
 import { EventBus } from '../../../../../../src/Contexts/Shared/domain/EventBus';
 import { EnvironmentArranger } from '../../../../../Contexts/Shared/infrastructure/arranger/EnvironmentArranger';
 

@@ -1,0 +1,12 @@
+services:
+  Apps.mechoui.controllers.StatusGetController:
+    class: ../../controllers/StatusGetController
+    arguments: []
+
+  Apps.mechoui.controllers.CoursePutController:
+    class: ../../controllers/CoursePutController
+    arguments: ['@Mechoui.Shared.domain.CommandBus']
+
+  Apps.mechoui.controllers.CoursesCounterGetController:
+    class: ../../controllers/CoursesCounterGetController
+    arguments: ['@Mechoui.Shared.domain.QueryBus']

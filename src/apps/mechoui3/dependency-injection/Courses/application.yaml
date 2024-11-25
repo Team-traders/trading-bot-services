@@ -1,0 +1,19 @@
+services:
+  Mechoui3.Courses.domain.CourseRepository:
+    class: ../../../../Contexts/Mooc/Courses/infrastructure/persistence/MongoCourseRepository
+    arguments: ['@Mechoui3.Shared.ConnectionManager']
+
+  Mechoui3.Courses.application.CourseCreator:
+    class: ../../../../Contexts/Mooc/Courses/application/CourseCreator
+    arguments: ['@Mechoui3.Courses.domain.CourseRepository', '@Mechoui3.Shared.domain.EventBus']
+
+  Mechoui3.courses.Boom:
+    class: ../../../../Contexts/mechoui3/Courses/application/Create/Boom3
+    tags:
+      - { name: 'domainEventSubscriber' }
+
+  Mechoui3.courses.CreateCourseCommandHandler:
+    class: ../../../../Contexts/Mooc/Courses/application/Create/CreateCourseCommandHandler
+    arguments: ['@Mechoui3.Courses.application.CourseCreator']
+    tags:
+      - { name: 'commandHandler' }

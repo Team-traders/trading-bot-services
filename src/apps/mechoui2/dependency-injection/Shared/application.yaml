@@ -1,0 +1,64 @@
+services:
+  Mechoui2.Shared.MongoConfig:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  Mechoui2.Shared.RabbitMQConfig:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQConfigFactory
+      method: 'createConfig'
+
+  Mechoui2.Shared.domain.EventBus:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQEventBusFactory
+      method: 'create'
+    arguments:
+      [
+        '@Mechoui2.Shared.DomainEventFailoverPublisher',
+        '@Mechoui2.Shared.RabbitMQConnection',
+        '@Mechoui2.Shared.RabbitMQqueueFormatter',
+        '@Mechoui2.Shared.RabbitMQConfig'
+      ]
+
+  Mechoui2.Shared.ConnectionManager:
+    factory:
+      class: ../../../../Contexts/Shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['mooc', '@Mechoui2.Shared.MongoConfig']
+
+  Mechoui2.Shared.RabbitMQQueueFormatter:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    arguments: ['mooc']
+
+  Mechoui2.Shared.RabbitMQConnection:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection
+    arguments: ['@Mechoui2.Shared.RabbitMQConfig']
+
+  Mechoui2.Shared.RabbitMQqueueFormatter:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    arguments: ['mooc']
+
+  Mechoui2.Shared.RabbitMQConfigurer:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer
+    arguments: ["@Mechoui2.Shared.RabbitMQConnection", "@Mechoui2.Shared.RabbitMQQueueFormatter"]
+
+  Mechoui2.Shared.DomainEventFailoverPublisher:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher
+    arguments: ['@Mechoui2.Shared.ConnectionManager']
+
+  Mechoui2.Shared.CommandHandlers:
+    class: ../../../../Contexts/Shared/infrastructure/CommandBus/CommandHandlers
+    arguments: ['!tagged commandHandler']
+
+  Mechoui2.Shared.domain.CommandBus:
+    class: ../../../../Contexts/Shared/infrastructure/CommandBus/InMemoryCommandBus
+    arguments: ['@Mechoui2.Shared.CommandHandlers']
+
+  Mechoui2.Shared.QueryHandlers:
+    class: ../../../../Contexts/Shared/infrastructure/QueryBus/QueryHandlers
+    arguments: ['!tagged queryHandler']
+
+  Mechoui2.Shared.domain.QueryBus:
+    class: ../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
+    arguments: ['@Mechoui2.Shared.QueryHandlers']

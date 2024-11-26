@@ -14,40 +14,40 @@ services:
       - { name: 'commandHandler' }
 
   Example.Courses.application.CoursesFinder:
-    class: ../../../../Contexts/Example/Courses/application/SearchAll/CoursesFinder
+    class: ../../../../Contexts/example/Courses/application/SearchAll/CoursesFinder
     arguments: ['@Example.Courses.domain.BackofficeCourseRepository']
 
   Example.courses.SearchAllCoursesQueryHandler:
-    class: ../../../../Contexts/Example/Courses/application/SearchAll/SearchAllCoursesQueryHandler
+    class: ../../../../Contexts/example/Courses/application/SearchAll/SearchAllCoursesQueryHandler
     arguments: ['@Example.Courses.application.CoursesFinder']
     tags:
       - { name: 'queryHandler' }
 
   Example.Courses.domain.BackofficeCourseRepository:
-    class: ../../../../Contexts/Example/Courses/infrastructure/persistence/MongoBackofficeCourseRepository
+    class: ../../../../Contexts/example/Courses/infrastructure/persistence/MongoBackofficeCourseRepository
     arguments: ['@Example.Shared.ConnectionManager']
 
   Example.Courses.application.BackofficeCourseCreator:
-    class: ../../../../Contexts/Example/Courses/application/Create/BackofficeCourseCreator
+    class: ../../../../Contexts/example/Courses/application/Create/BackofficeCourseCreator
     arguments: ['@Example.Courses.domain.BackofficeCourseRepository']
 
   Example.courses.ExampleEventHandler2:
-    class: ../../../../Contexts/Example/Courses/application/Create/ExampleEventHandler2
+    class: ../../../../Contexts/example/Courses/application/Create/ExampleEventHandler2
     arguments: ['@Example.Courses.application.BackofficeCourseCreator']
     tags:
       - { name: 'domainEventSubscriber' }
 
   Example.courses.ExampleEventHandler:
-    class: ../../../../Contexts/Example/Courses/application/Create/ExampleEventHandler
+    class: ../../../../Contexts/example/Courses/application/Create/ExampleEventHandler
     tags:
       - { name: 'domainEventSubscriber' }
 
   Example.courses.application.CoursesByCriteriaSearcher:
-    class: ../../../../Contexts/Example/Courses/application/SearchByCriteria/CoursesByCriteriaSearcher
+    class: ../../../../Contexts/example/Courses/application/SearchByCriteria/CoursesByCriteriaSearcher
     arguments: ['@Example.Courses.domain.BackofficeCourseRepository']
 
   Example.courses.SearchCoursesByCriteriaQueryHandler:
-    class: ../../../../Contexts/Example/Courses/application/SearchByCriteria/SearchCoursesByCriteriaQueryHandler
+    class: ../../../../Contexts/example/Courses/application/SearchByCriteria/SearchCoursesByCriteriaQueryHandler
     arguments: ['@Example.courses.application.CoursesByCriteriaSearcher']
     tags:
       - { name: 'queryHandler' }

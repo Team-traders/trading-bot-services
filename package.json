@@ -1,11 +1,16 @@
 {
   "name": "trading-bot-services",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
+    "dev": "./run_project.sh",
+    "kill": "./kill_servers.sh",
+    "docker:init": "./init_docker.sh",
+    "docker:stop": "./stop_docker.sh",
     "dev:mooc:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/mooc/start.ts",
     "dev:mechoui:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/mechoui/start.ts",
     "dev:mechoui2:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/mechoui2/start.ts",

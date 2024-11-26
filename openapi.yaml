@@ -1,0 +1,250 @@
+openapi: 3.0.0
+info:
+  title: Trading Bot API
+  version: 1.0.0
+  description: API for managing price alerts and orders in the trading bot.
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+tags:
+  - name: AlertService
+    description: Endpoints related to managing price alerts
+  - name: StrategyService
+    description: Endpoints related to managing orders and strategies
+
+paths:
+  /alerts:
+    get:
+      summary: Get all price alerts
+      operationId: getPriceAlerts
+      tags:
+        - AlertService
+      responses:
+        '200':
+          description: List of all price alerts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    alertId:
+                      type: string
+                      example: "64f8d5e2e4b0c3044cd8271e"
+                    symbol:
+                      type: string
+                      example: BTC/USDT
+                    targetPrice:
+                      type: number
+                      example: 60000
+                    triggerCondition:
+                      type: string
+                      enum: [GTE, LTE]
+                      example: GTE
+                    emailTitle:
+                      type: string
+                      example: "BTC Price Alert"
+                    emailMessage:
+                      type: string
+                      example: "BTC has reached your target price!"
+                    status:
+                      type: string
+                      enum: [ACTIVE, TRIGGERED, CANCELED]
+                      example: ACTIVE
+                    linkedOrderId:
+                      type: string
+                      nullable: true
+                      example: "64f8d5e2e4b0c3044cd8271f"
+    post:
+      summary: Subscribe to a price alert
+      operationId: createPriceAlert
+      tags:
+        - AlertService
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - symbol
+                - targetPrice
+                - triggerCondition
+                - emailTitle
+                - emailMessage
+              properties:
+                symbol:
+                  type: string
+                  example: BTC/USDT
+                targetPrice:
+                  type: number
+                  example: 60000
+                triggerCondition:
+                  type: string
+                  enum: [GTE, LTE]
+                  example: GTE
+                emailTitle:
+                  type: string
+                  example: "BTC Price Alert"
+                emailMessage:
+                  type: string
+                  example: "BTC has reached your target price!"
+      responses:
+        '201':
+          description: Alert successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  alertId:
+                    type: string
+                    example: "64f8d5e2e4b0c3044cd8271e"
+        '400':
+          description: Invalid input.
+    delete:
+      summary: Cancel a price alert
+      operationId: cancelPriceAlert
+      tags:
+        - AlertService
+      parameters:
+        - name: alertId
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "64f8d5e2e4b0c3044cd8271e"
+      responses:
+        '200':
+          description: Alert successfully canceled.
+        '400':
+          description: Alert cannot be canceled (e.g., linked to an order).
+
+  /orders:
+    get:
+      summary: Get all orders
+      operationId: getOrders
+      tags:
+        - StrategyService
+      responses:
+        '200':
+          description: List of all orders.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    orderId:
+                      type: string
+                      example: "64f8d5e2e4b0c3044cd8271e"
+                    symbol:
+                      type: string
+                      example: BTC/USDT
+                    entryPrice:
+                      type: number
+                      example: 60000
+                    stopLoss:
+                      type: number
+                      example: 58000
+                    takeProfit:
+                      type: number
+                      example: 64000
+                    status:
+                      type: string
+                      enum: [PENDING, EXECUTED, CANCELED]
+                      example: PENDING
+    post:
+      summary: Create a new order
+      operationId: createOrder
+      tags:
+        - StrategyService
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - symbol
+                - entryPrice
+                - stopLoss
+                - takeProfit
+              properties:
+                symbol:
+                  type: string
+                  example: BTC/USDT
+                entryPrice:
+                  type: number
+                  example: 60000
+                stopLoss:
+                  type: number
+                  example: 58000
+                takeProfit:
+                  type: number
+                  example: 64000
+      responses:
+        '201':
+          description: Order successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: string
+                    example: "64f8d5e2e4b0c3044cd8271e"
+        '400':
+          description: Invalid input.
+    patch:
+      summary: Modify an existing order (TP/SL)
+      operationId: modifyOrder
+      tags:
+        - StrategyService
+      parameters:
+        - name: orderId
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "64f8d5e2e4b0c3044cd8271e"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stopLoss:
+                  type: number
+                  example: 59000
+                takeProfit:
+                  type: number
+                  example: 65000
+      responses:
+        '200':
+          description: Order successfully modified.
+        '400':
+          description: Invalid input.
+    delete:
+      summary: Cancel an order
+      operationId: cancelOrder
+      tags:
+        - StrategyService
+      parameters:
+        - name: orderId
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "64f8d5e2e4b0c3044cd8271e"
+      responses:
+        '200':
+          description: Order successfully canceled.
+        '400':
+          description: Order cannot be canceled (e.g., already executed).
+

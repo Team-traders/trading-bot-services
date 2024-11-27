@@ -14,17 +14,13 @@ export class CoursesPostController implements Controller {
   constructor(private readonly commandBus: CommandBus) {}
 
   async run(req: Request<CreateCourseRequest>, res: Response) {
-    await this.createCourse(req);
-    res.status(httpStatus.OK).send();
-  }
-
-  private async createCourse(req: Request<CreateCourseRequest>) {
     const createCourseCommand = new CreateCourseCommand({
       id: req.body.id,
       name: req.body.name,
-      duration: req.body.duration
+      duration: req.body.duration,
     });
 
     await this.commandBus.dispatch(createCourseCommand);
+    res.status(httpStatus.OK).send();
   }
 }

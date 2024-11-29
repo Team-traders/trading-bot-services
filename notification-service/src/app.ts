@@ -7,12 +7,10 @@ export function initializeApp() {
     const rabbitMQConsumer = new RabbitMQConsumerAdapter();
     const NotificationSender = new NodeMailerSenderAdapter();
     const sendMailUseCase = new SendMailUseCase(NotificationSender);
-    rabbitMQConsumer.consume(rabbitMQConfig.queues.notificationA, async(event) => {
-        //envoyer le mail
-        // TODO : monter en abstraction, a refaire
-        sendMailUseCase.execute(event);
-        console.log(event)
-        console.log("mail sending")
+    rabbitMQConsumer.consume(rabbitMQConfig.queues.notificationA, async(notification) => {
+
+        sendMailUseCase.execute(notification);
+        console.log("mail sending, dirou lmechwi")
     })
 
     return {rabbitMQConsumer}

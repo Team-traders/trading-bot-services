@@ -8,15 +8,15 @@ export class RabbitMQConsumerAdapter implements EventConsumer {
 
         try {
             const connection = await amqp.connect('amqp://localhost');
-            console.log(connection)
+            console.log("connection")
             const channel = await connection.createChannel();
-            console.log(channel)
+            console.log("chanel created")
     
             // Assurer que la queue existe
             await channel.assertQueue(queuName, rabbitMQConfig.options);
             console.log(`Listening to queue: ${queuName}`);
             
-            channel.consume('Test',  async (msg) => {
+            channel.consume('AlertTriggeredEvent',  async (msg) => {
                 if (msg) {
                     console.log("youpi")
                     const messageContent = JSON.parse(msg.content.toString());

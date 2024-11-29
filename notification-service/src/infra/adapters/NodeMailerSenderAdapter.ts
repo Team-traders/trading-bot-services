@@ -2,21 +2,29 @@ import { MailOption } from "../../core/entities/MailOption";
 import { Notification } from "../../core/entities/Notification";
 import { NotificationSender } from "../ports/NotificationSender";
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv'
+import SMTPTransport from "nodemailer/lib/smtp-transport";
+
+dotenv.config()
 
 
 export class NodeMailerSenderAdapter implements NotificationSender {
 
     // Configurer le transporteur SMTP
-private transporter = nodemailer.createTransport({
-    host: "live.smtp.mailtrap.io",
-    port: 587,
-    auth: {
-      user: "api",
-      pass: "d26e88cefe86fa6bca5ab3dcf1f7ab94",
-    },
-  });
+private transporter : any
 
     async send(mailOption : MailOption): Promise<void> {
+      const transporter : any = {
+        host: process.env.HOST_GMAIL || "EMPTY",
+        port: parseInt(process.env.PORT || "EMPTY"), // Assurez-vous que le port est un nombre
+        secure : true,
+        auth: {
+          user: process.env.USER_MAIL || "EMPTY",
+          pass:  process.env.PASSWORD_APPLICATION || "EMPTY",
+        },
+      }
+
+      this.transporter = nodemailer.createTransport(transporter);
         const mailOptions = mailOption;
         
           try {

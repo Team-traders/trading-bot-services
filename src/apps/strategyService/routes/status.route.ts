@@ -4,8 +4,12 @@ import StatusController from '../controllers/StatusGetController';
 
 export const registerStatusRoutes = (): Router => {
   const router = Router();
-  const controller: StatusController = container.get('Apps.mechoui2.controllers.StatusGetController');
-  router.get('/status', (req: Request, res: Response) => controller.run(req, res));
+  const controller: StatusController = container.get(
+    'Apps.strategyService.controllers.StatusGetController',
+  );
+  router.get('/status', (req: Request, res: Response) =>
+    controller.run(req, res),
+  );
 
   return router;
 };

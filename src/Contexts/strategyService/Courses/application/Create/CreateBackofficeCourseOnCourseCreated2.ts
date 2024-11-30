@@ -3,7 +3,9 @@ import { DomainEventClass } from '../../../../Shared/domain/DomainEvent';
 import { DomainEventSubscriber } from '../../../../Shared/domain/DomainEventSubscriber';
 //import { BackofficeCourseCreator } from './BackofficeCourseCreator';
 
-export class CreateBackofficeCourseOnCourseCreated2 implements DomainEventSubscriber<CourseCreatedDomainEvent> {
+export class CreateBackofficeCourseOnCourseCreated2
+  implements DomainEventSubscriber<CourseCreatedDomainEvent>
+{
   //constructor(private creator: BackofficeCourseCreator) {}
 
   subscribedTo(): DomainEventClass[] {
@@ -11,6 +13,6 @@ export class CreateBackofficeCourseOnCourseCreated2 implements DomainEventSubscr
   }
 
   async on(_domainEvent: CourseCreatedDomainEvent): Promise<void> {
-    console.log('mechoui2.com');
+    console.log('strategyService.com');
   }
 }

@@ -4,4 +4,4 @@ imports:
 services:
   Mooc.EnvironmentArranger:
     class: ../../../../tests/Contexts/Shared/infrastructure/mongo/MongoEnvironmentArranger
-    arguments: ['@Mechoui.Shared.ConnectionManager']
+    arguments: ['@AlertService.Shared.ConnectionManager']

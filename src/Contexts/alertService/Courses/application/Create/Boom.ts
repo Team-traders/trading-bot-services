@@ -8,6 +8,6 @@ export class Boom implements DomainEventSubscriber<CourseCreatedDomainEvent> {
   }
 
   async on(domainEvent: CourseCreatedDomainEvent): Promise<void> {
-    console.log('mechoui.com');
+    console.log('alertService.com');
   }
 }

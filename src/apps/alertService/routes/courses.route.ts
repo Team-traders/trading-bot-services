@@ -9,12 +9,17 @@ export const registerCoursesRoutes = (): Router => {
   const reqSchema = [
     body('id').exists().isString(),
     body('name').exists().isString(),
-    body('duration').exists().isString()
+    body('duration').exists().isString(),
   ];
 
-  const coursePutController: CoursePutController = container.get('Apps.mechoui.controllers.CoursePutController');
-  router.put('/courses/:id', reqSchema, validateReqSchema, (req: Request, res: Response) =>
-    coursePutController.run(req, res)
+  const coursePutController: CoursePutController = container.get(
+    'Apps.alertService.controllers.CoursePutController',
+  );
+  router.put(
+    '/courses/:id',
+    reqSchema,
+    validateReqSchema,
+    (req: Request, res: Response) => coursePutController.run(req, res),
   );
   return router;
 };

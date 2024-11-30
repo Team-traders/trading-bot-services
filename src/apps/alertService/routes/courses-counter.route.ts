@@ -4,10 +4,12 @@ import { CoursesCounterGetController } from '../controllers/CoursesCounterGetCon
 
 export const registerCoursesCounterRoutes = (): Router => {
   const router = Router();
-  const coursesCounterGetController: CoursesCounterGetController = container.get(
-    'Apps.mechoui.controllers.CoursesCounterGetController'
+  const coursesCounterGetController: CoursesCounterGetController =
+    container.get('Apps.alertService.controllers.CoursesCounterGetController');
+
+  router.get('/courses-counter', (req: Request, res: Response) =>
+    coursesCounterGetController.run(req, res),
   );
-  router.get('/courses-counter', (req: Request, res: Response) => coursesCounterGetController.run(req, res));
 
   return router;
 };

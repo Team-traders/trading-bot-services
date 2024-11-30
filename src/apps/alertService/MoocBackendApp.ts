@@ -21,14 +21,20 @@ export class MoocBackendApp {
   }
 
   async stop() {
-    const rabbitMQConnection = container.get<RabbitMqConnection>('Mechoui.Shared.RabbitMQConnection');
+    const rabbitMQConnection = container.get<RabbitMqConnection>(
+      'AlertService.Shared.RabbitMQConnection',
+    );
     await rabbitMQConnection.close();
     return this.server?.stop();
   }
 
   private async configureEventBus() {
-    const eventBus = container.get<EventBus>('Mechoui.Shared.domain.EventBus');
-    const rabbitMQConnection = container.get<RabbitMqConnection>('Mechoui.Shared.RabbitMQConnection');
+    const eventBus = container.get<EventBus>(
+      'AlertService.Shared.domain.EventBus',
+    );
+    const rabbitMQConnection = container.get<RabbitMqConnection>(
+      'AlertService.Shared.RabbitMQConnection',
+    );
     await rabbitMQConnection.connect();
 
     eventBus.addSubscribers(DomainEventSubscribers.from(container));

@@ -1,0 +1,24 @@
+services:
+  StrategyService.CoursesCounter.CoursesCounterRepository:
+    class: ../../../../Contexts/Mooc/CoursesCounter/infrastructure/persistence/mongo/MongoCoursesCounterRepository
+    arguments: ['@StrategyService.Shared.ConnectionManager']
+
+  StrategyService.CoursesCounter.CoursesCounterIncrementer:
+    class: ../../../../Contexts/Mooc/CoursesCounter/application/Increment/CoursesCounterIncrementer
+    arguments: ['@StrategyService.CoursesCounter.CoursesCounterRepository', '@StrategyService.Shared.domain.EventBus']
+
+  StrategyService.CoursesCounter.IncrementCoursesCounterOnCourseCreated:
+    class: ../../../../Contexts/strategyService/Courses/application/Create/CreateBackofficeCourseOnCourseCreated2
+    arguments: ['@StrategyService.CoursesCounter.CoursesCounterIncrementer']
+    tags:
+      - { name: 'domainEventSubscriber' }
+
+  StrategyService.CoursesCounter.CoursesCounterFinder:
+    class: ../../../../Contexts/Mooc/CoursesCounter/application/Find/CoursesCounterFinder
+    arguments: ['@StrategyService.CoursesCounter.CoursesCounterRepository']
+
+  StrategyService.CoursesCounter.FindCoursesCounterQueryHandler:
+    class: ../../../../Contexts/Mooc/CoursesCounter/application/Find/FindCoursesCounterQueryHandler
+    arguments: ['@StrategyService.CoursesCounter.CoursesCounterFinder']
+    tags:
+      - { name: 'queryHandler' }

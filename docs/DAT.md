@@ -122,6 +122,21 @@ the following project is a trading bot that allows its users to automate trades,
 }
 ```
 
+- `OrderPlacedEvent`: Contains the information relevant to my order that I placed
+
+### Event Example:
+
+```json
+{
+  "eventType": "OrderPlacedEvent",
+  "orderId": "orderId123",
+  "symbol": "BTC/USDT",
+  "entryPrice": 60000,
+  "stopLoss": 58000,
+  "takeProfit": 64000
+}
+```
+
 ### Events Consumed:
 
 - `AlertTriggeredEvent`: Listens for alerts from the Alert Service to decide when to execute trades based on the strategy.
@@ -200,7 +215,7 @@ the following project is a trading bot that allows its users to automate trades,
   - Published by: Trade Execution Service
   - Consumed by: Strategy Service, Notification Service
 
-## 5. Database Schema
+## 6. Database Schema
 
 ### **Orders Collection**
 

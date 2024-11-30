@@ -8,7 +8,7 @@ services:
     arguments: ['@AlertService.CoursesCounter.CoursesCounterRepository', '@AlertService.Shared.domain.EventBus']
 
   AlertService.CoursesCounter.IncrementCoursesCounterOnCourseCreated:
-    class: ../../../../Contexts/alertService/Courses/application/Create/CreateBackofficeCourseOnCourseCreated
+    class: ../../../../Contexts/alertService/alerts/application/Create/CreateBackofficeCourseOnCourseCreated
     arguments: ['@AlertService.CoursesCounter.CoursesCounterIncrementer']
     tags:
       - { name: 'domainEventSubscriber' }

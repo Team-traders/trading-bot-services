@@ -8,7 +8,7 @@ services:
     arguments: ['@StrategyService.Courses.domain.CourseRepository', '@StrategyService.Shared.domain.EventBus']
 
   StrategyService.courses.Boom:
-    class: ../../../../Contexts/strategyService/Courses/application/Create/Boom2
+    class: ../../../../Contexts/strategyService/orders/application/Create/Boom2
     tags:
       - { name: 'domainEventSubscriber' }
 

@@ -1,11 +1,4 @@
-import {
-  Collection,
-  MongoClient,
-  Document,
-  ObjectId,
-  Filter,
-  FindOptions,
-} from 'mongodb';
+import { Collection, MongoClient, Document, ObjectId } from 'mongodb';
 import { MongoCriteriaConverter } from '../../../../Backoffice/Courses/infrastructure/persistence/MongoCriteriaConverter';
 import { AggregateRoot } from '../../../domain/AggregateRoot';
 import { Criteria } from '../../../domain/criteria/Criteria';
@@ -18,11 +11,6 @@ export abstract class MongoRepository<T extends AggregateRoot> {
   }
 
   protected abstract collectionName(): string;
-
-  public abstract find(
-    filters: Filter<Document>,
-    options: FindOptions,
-  ): Promise<Object[]>;
 
   protected client(): Promise<MongoClient> {
     return this._client;

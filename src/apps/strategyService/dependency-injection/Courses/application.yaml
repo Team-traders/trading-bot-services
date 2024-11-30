@@ -3,12 +3,22 @@ services:
     class: ../../../../Contexts/Mooc/Courses/infrastructure/persistence/MongoCourseRepository
     arguments: ['@StrategyService.Shared.ConnectionManager']
 
+  StrategyService.Orders.domain.OrderRepository:
+    class: ../../../../Contexts/strategyService/orders/infrastructure/persistence/MongoOrderRepository
+    arguments: ['@StrategyService.Shared.ConnectionManager']
+
   StrategyService.Courses.application.CourseCreator:
     class: ../../../../Contexts/Mooc/Courses/application/CourseCreator
     arguments: ['@StrategyService.Courses.domain.CourseRepository', '@StrategyService.Shared.domain.EventBus']
 
   StrategyService.courses.Boom:
     class: ../../../../Contexts/strategyService/orders/application/Create/Boom2
+    tags:
+      - { name: 'domainEventSubscriber' }
+  
+  StrategyService.CoursesCounter.IncrementCoursesCounterOnCourseCreated:
+    class: ../../../../Contexts/strategyService/orders/application/Create/CreateBackofficeCourseOnCourseCreated2
+    arguments: ['@StrategyService.Orders.domain.OrderRepository']
     tags:
       - { name: 'domainEventSubscriber' }
 

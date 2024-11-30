@@ -11,7 +11,7 @@ export class Boom implements DomainEventSubscriber<CourseCreatedDomainEvent> {
   }
 
   async on(domainEvent: CourseCreatedDomainEvent): Promise<void> {
-    const result = await this.repo.findo();
+    const result = await this.repo.find();
     console.log('alertService.com');
     console.log('alert service results : ', result, result.length);
   }

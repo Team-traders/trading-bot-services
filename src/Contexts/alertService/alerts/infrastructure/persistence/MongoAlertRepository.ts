@@ -55,35 +55,9 @@ export class MongoAlertRepository
     );
   }
 
-  public async findo(
+  public async find(
     filters: Filter<Document>,
     options: FindOptions,
-  ): Promise<Alert[]> {
-    const collection = await this.collection();
-    const documents = await collection
-      .find<AlertDocument>(filters, options)
-      .toArray();
-
-    return documents.map((document) =>
-      Alert.fromPrimitives({
-        _id: document._id.toString(),
-        symbol: document.symbol,
-        linkedOrderId: document.linkedOrderId || null,
-        alertType: document.alertType as AlertTypeEnum,
-        alertPrice: document.alertPrice,
-        triggerCondition: document.triggerCondition as TriggerConditionEnum,
-        status: document.status as AlertStatusEnum,
-        title: document.title,
-        message: document.message,
-        createdAt: document.createdAt.toISOString(),
-        updatedAt: document.updatedAt.toISOString(),
-      }),
-    );
-  }
-
-  public async find(
-    filters: Filter<Document> = {},
-    options: FindOptions = {},
   ): Promise<Alert[]> {
     const collection = await this.collection();
     const documents = await collection

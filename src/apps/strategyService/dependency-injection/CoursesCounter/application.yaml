@@ -7,12 +7,6 @@ services:
     class: ../../../../Contexts/Mooc/CoursesCounter/application/Increment/CoursesCounterIncrementer
     arguments: ['@StrategyService.CoursesCounter.CoursesCounterRepository', '@StrategyService.Shared.domain.EventBus']
 
-  StrategyService.CoursesCounter.IncrementCoursesCounterOnCourseCreated:
-    class: ../../../../Contexts/strategyService/orders/application/Create/CreateBackofficeCourseOnCourseCreated2
-    arguments: ['@StrategyService.CoursesCounter.CoursesCounterIncrementer']
-    tags:
-      - { name: 'domainEventSubscriber' }
-
   StrategyService.CoursesCounter.CoursesCounterFinder:
     class: ../../../../Contexts/Mooc/CoursesCounter/application/Find/CoursesCounterFinder
     arguments: ['@StrategyService.CoursesCounter.CoursesCounterRepository']

@@ -17,13 +17,13 @@ yarn command:mooc:rabbitmq
 yarn command:backoffice:rabbitmq
 yarn command:mechoui3:rabbitmq
 yarn command:mechoui2:rabbitmq
-yarn command:mechoui:rabbitmq
+yarn command:alertService:rabbitmq
 yarn command:example:rabbitmq
 
 # Start development servers
 echo "Starting development servers..."
 yarn dev:mooc:backend &
-yarn dev:mechoui:backend &
+yarn dev:alertService:backend &
 yarn dev:mechoui2:backend &
 yarn dev:mechoui3:backend &
 yarn dev:backoffice:backend &

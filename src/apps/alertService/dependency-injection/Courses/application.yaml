@@ -8,7 +8,7 @@ services:
     arguments: ['@Mechoui.Courses.domain.CourseRepository', '@Mechoui.Shared.domain.EventBus']
 
   Mechoui.courses.Boom:
-    class: ../../../../Contexts/mechoui/Courses/application/Create/Boom
+    class: ../../../../Contexts/alertService/Courses/application/Create/Boom
     tags:
       - { name: 'domainEventSubscriber' }
 

@@ -38,7 +38,7 @@ Write-Output "Waiting for services to initialize..."
 # Start development servers
 Write-Output "Starting development servers..."
 Start-Process -NoNewWindow -FilePath npm -ArgumentList "run windows:dev:mooc:backend"
-Start-Process -NoNewWindow -FilePath npm -ArgumentList "run windows:dev:mechoui:backend"
+Start-Process -NoNewWindow -FilePath npm -ArgumentList "run windows:dev:alertService:backend"
 Start-Process -NoNewWindow -FilePath npm -ArgumentList "run windows:dev:mechoui2:backend"
 Start-Process -NoNewWindow -FilePath npm -ArgumentList "run windows:dev:mechoui3:backend"
 Start-Process -NoNewWindow -FilePath npm -ArgumentList "run windows:dev:backoffice:backend"

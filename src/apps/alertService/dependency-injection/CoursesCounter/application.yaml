@@ -8,7 +8,7 @@ services:
     arguments: ['@Mechoui.CoursesCounter.CoursesCounterRepository', '@Mechoui.Shared.domain.EventBus']
 
   Mechoui.CoursesCounter.IncrementCoursesCounterOnCourseCreated:
-    class: ../../../../Contexts/mechoui/Courses/application/Create/CreateBackofficeCourseOnCourseCreated
+    class: ../../../../Contexts/alertService/Courses/application/Create/CreateBackofficeCourseOnCourseCreated
     arguments: ['@Mechoui.CoursesCounter.CoursesCounterIncrementer']
     tags:
       - { name: 'domainEventSubscriber' }

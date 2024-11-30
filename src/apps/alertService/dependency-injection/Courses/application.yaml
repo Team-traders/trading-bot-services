@@ -3,12 +3,17 @@ services:
     class: ../../../../Contexts/Mooc/Courses/infrastructure/persistence/MongoCourseRepository
     arguments: ['@AlertService.Shared.ConnectionManager']
 
+  AlertService.alerts.domain.AlertRepository:
+    class: ../../../../Contexts/alertService/alerts/infrastructure/persistence/MongoAlertRepository
+    arguments: ['@AlertService.Shared.ConnectionManager']
+
   AlertService.Courses.application.CourseCreator:
     class: ../../../../Contexts/Mooc/Courses/application/CourseCreator
     arguments: ['@AlertService.Courses.domain.CourseRepository', '@AlertService.Shared.domain.EventBus']
 
   AlertService.courses.Boom:
     class: ../../../../Contexts/alertService/alerts/application/Create/Boom
+    arguments: ['@AlertService.alerts.domain.AlertRepository']
     tags:
       - { name: 'domainEventSubscriber' }
 

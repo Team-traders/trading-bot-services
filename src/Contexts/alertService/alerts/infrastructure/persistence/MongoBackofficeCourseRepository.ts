@@ -1,3 +1,4 @@
+import { Filter, FindOptions } from 'mongodb';
 import { Criteria } from '../../../../Shared/domain/criteria/Criteria';
 import { MongoRepository } from '../../../../Shared/infrastructure/persistence/mongo/MongoRepository';
 import { BackofficeCourse } from '../../domain/BackofficeCourse';
@@ -25,16 +26,33 @@ export class MongoBackofficeCourseRepository
     const collection = await this.collection();
     const documents = await collection.find<CourseDocument>({}, {}).toArray();
 
-    return documents.map(document =>
-      BackofficeCourse.fromPrimitives({ name: document.name, duration: document.duration, id: document._id.toString() })
+    return documents.map((document) =>
+      BackofficeCourse.fromPrimitives({
+        name: document.name,
+        duration: document.duration,
+        id: document._id.toString(),
+      }),
     );
   }
 
   public async matching(criteria: Criteria): Promise<BackofficeCourse[]> {
     const documents = await this.searchByCriteria<CourseDocument>(criteria);
 
-    return documents.map(document =>
-      BackofficeCourse.fromPrimitives({ name: document.name, duration: document.duration, id: document._id.toString() })
+    return documents.map((document) =>
+      BackofficeCourse.fromPrimitives({
+        name: document.name,
+        duration: document.duration,
+        id: document._id.toString(),
+      }),
     );
+  }
+
+  public async find(
+    filters: Filter<Document> = {},
+    options: FindOptions = {},
+  ): Promise<Object[]> {
+    await this.collection();
+
+    return [];
   }
 }

@@ -1,4 +1,4 @@
-import { NumberValueObject } from '../../../Shared/domain/value-object/IntValueObject';
+import { NumberValueObject } from '../../../Shared/domain/value-object/NumberValueObject';
 
 export class CoursesCounterTotal extends NumberValueObject {
   increment(): CoursesCounterTotal {

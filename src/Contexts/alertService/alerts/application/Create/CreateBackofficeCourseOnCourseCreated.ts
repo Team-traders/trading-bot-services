@@ -3,7 +3,9 @@ import { DomainEventClass } from '../../../../Shared/domain/DomainEvent';
 import { DomainEventSubscriber } from '../../../../Shared/domain/DomainEventSubscriber';
 //import { BackofficeCourseCreator } from './BackofficeCourseCreator';
 
-export class CreateBackofficeCourseOnCourseCreated implements DomainEventSubscriber<CourseCreatedDomainEvent> {
+export class CreateBackofficeCourseOnCourseCreated
+  implements DomainEventSubscriber<CourseCreatedDomainEvent>
+{
   //constructor(private creator: BackofficeCourseCreator) {}
 
   subscribedTo(): DomainEventClass[] {

@@ -1,4 +1,11 @@
-import { Collection, MongoClient, ObjectId } from 'mongodb';
+import {
+  Collection,
+  MongoClient,
+  Document,
+  ObjectId,
+  Filter,
+  FindOptions,
+} from 'mongodb';
 import { MongoCriteriaConverter } from '../../../../Backoffice/Courses/infrastructure/persistence/MongoCriteriaConverter';
 import { AggregateRoot } from '../../../domain/AggregateRoot';
 import { Criteria } from '../../../domain/criteria/Criteria';
@@ -11,6 +18,11 @@ export abstract class MongoRepository<T extends AggregateRoot> {
   }
 
   protected abstract collectionName(): string;
+
+  public abstract find(
+    filters: Filter<Document>,
+    options: FindOptions,
+  ): Promise<Object[]>;
 
   protected client(): Promise<MongoClient> {
     return this._client;
@@ -25,14 +37,25 @@ export abstract class MongoRepository<T extends AggregateRoot> {
 
     const document = { ...aggregateRoot.toPrimitives(), id: undefined };
 
-    await collection.updateOne({ _id: new ObjectId(id) }, { $set: document }, { upsert: true });
+    await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: document },
+      { upsert: true },
+    );
   }
 
-  protected async searchByCriteria<D extends Document>(criteria: Criteria): Promise<D[]> {
+  protected async searchByCriteria<D extends Document>(
+    criteria: Criteria,
+  ): Promise<D[]> {
     const query = this.criteriaConverter.convert(criteria);
 
     const collection = await this.collection();
 
-    return await collection.find<D>(query.filter, {}).sort(query.sort).skip(query.skip).limit(query.limit).toArray();
+    return await collection
+      .find<D>(query.filter, {})
+      .sort(query.sort)
+      .skip(query.skip)
+      .limit(query.limit)
+      .toArray();
   }
 }

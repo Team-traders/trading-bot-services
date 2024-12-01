@@ -2,13 +2,13 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "commonjs",
-    "rootDir": "src",
+    "rootDir": "mails",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
   },
   
-  "include": ["src/**/*"],
+  "include": ["../../contexts/notificationService/mails/**/*", "app.ts", "server.ts"],
   "exclude": ["node_modules", "dist"]
 }

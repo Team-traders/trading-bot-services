@@ -1,5 +1,5 @@
-import { MailOption } from "../../core/entities/MailOption";
-import { Notification } from "../../core/entities/Notification";
+import { MailOption } from "../../domain/valueObjects/MailOption";
+import { Notification } from "../../domain/entities/Notification";
 import { NotificationSender } from "../ports/NotificationSender";
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv'

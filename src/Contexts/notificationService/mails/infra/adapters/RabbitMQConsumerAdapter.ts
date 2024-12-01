@@ -1,13 +1,16 @@
 import { rabbitMQConfig } from "../config/RabbitMQConfig";
 import { EventConsumer } from "../ports/EventConsumer";
 import amqp, { Channel, Connection } from 'amqplib';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export class RabbitMQConsumerAdapter implements EventConsumer {
 
     async consume(queuName: string, callback: (event: any) => Promise<void>): Promise<void> {
 
         try {
-            const connection = await amqp.connect('amqp://localhost');
+            const connection = await amqp.connect(rabbitMQConfig.url);
             console.log("connection")
             const channel = await connection.createChannel();
             console.log("chanel created")

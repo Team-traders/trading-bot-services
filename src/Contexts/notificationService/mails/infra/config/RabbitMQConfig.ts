@@ -1,3 +1,4 @@
+
 export const rabbitMQConfig = {
     url: process.env.RABBITMQ_URL || 'amqp://localhost',
     queues: {

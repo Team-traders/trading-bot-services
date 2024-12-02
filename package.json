@@ -10,6 +10,7 @@
     "dev": "./run_project.sh",
     "kill": "./kill_servers.sh",
     "docker:init": "./init_docker.sh",
+    "rabbitmq:init": "./init_rabbitmq.sh",
     "docker:stop": "./stop_docker.sh",
     "dev:mooc:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/mooc/start.ts",
     "dev:alertService:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/alertService/start.ts",

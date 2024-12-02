@@ -14,6 +14,19 @@ import {
   Symbol,
 } from './AlertValueObjects/ValueObjects';
 
+type AlertProps = {
+  symbol: Symbol;
+  alertType: AlertType;
+  alertPrice: AlertPrice;
+  triggerCondition: TriggerCondition;
+  title: AlertTitle;
+  message: AlertMessage;
+  status?: AlertStatus; // Optional, defaults to 'ACTIVE'
+  linkedOrderId?: LinkedOrderId | null; // Optional, defaults to null
+  createdAt?: AlertDate; // Optional, defaults to current date
+  updatedAt?: AlertDate; // Optional, defaults to current date
+};
+
 export class Alert extends AggregateRoot {
   readonly id: AlertId;
   readonly symbol: Symbol;
@@ -54,18 +67,18 @@ export class Alert extends AggregateRoot {
     this.updatedAt = updatedAt;
   }
 
-  static create(
-    symbol: Symbol,
-    linkedOrderId: LinkedOrderId | null,
-    alertType: AlertType,
-    alertPrice: AlertPrice,
-    triggerCondition: TriggerCondition,
-    title: AlertTitle,
-    message: AlertMessage,
-    status: AlertStatus = new AlertStatus('ACTIVE'),
-    createdAt: AlertDate = new AlertDate(new Date(Date.now())),
-    updatedAt: AlertDate = new AlertDate(new Date(Date.now())),
-  ): Alert {
+  static create({
+    symbol,
+    alertType,
+    alertPrice,
+    triggerCondition,
+    title,
+    message,
+    status = new AlertStatus('ACTIVE'),
+    linkedOrderId = null,
+    createdAt = new AlertDate(new Date(Date.now())),
+    updatedAt = new AlertDate(new Date(Date.now())),
+  }: AlertProps): Alert {
     const id = AlertId.random();
 
     return new Alert(

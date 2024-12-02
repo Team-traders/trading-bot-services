@@ -126,7 +126,19 @@ export class Alert extends AggregateRoot {
     );
   }
 
-  toPrimitives() {
+  toPrimitives(): {
+    _id: string;
+    symbol: string;
+    linkedOrderId: string | null;
+    alertType: string;
+    alertPrice: number;
+    triggerCondition: string;
+    status: string;
+    title: string;
+    message: string;
+    createdAt: Date;
+    updatedAt: Date;
+  } {
     return {
       _id: this.id.value,
       symbol: this.symbol.value,
@@ -137,8 +149,8 @@ export class Alert extends AggregateRoot {
       status: this.status.value,
       title: this.title.value,
       message: this.message.value,
-      createdAt: this.createdAt.value.toISOString(),
-      updatedAt: this.updatedAt.value.toISOString(),
+      createdAt: this.createdAt.value,
+      updatedAt: this.updatedAt.value,
     };
   }
 }

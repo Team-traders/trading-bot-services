@@ -28,3 +28,8 @@ services:
     arguments: ['@AlertService.alerts.domain.AlertRepository']
     tags:
       - { name: 'commandHandler' }
+  AlertService.courses.FindAlertsQueryHandler:
+    class: ../../../../Contexts/alertService/alerts/domain/queryHandlers/FindAlertsQueryHandler
+    arguments: ['@AlertService.alerts.domain.AlertRepository']
+    tags:
+      - { name: 'queryHandler' }

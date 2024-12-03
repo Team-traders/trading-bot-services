@@ -1,11 +1,7 @@
 import { MailOption } from "../../domain/valueObjects/MailOption";
-import { Notification } from "../../domain/entities/Notification";
 import { NotificationSender } from "../ports/NotificationSender";
 import nodemailer from 'nodemailer';
-import dotenv from 'dotenv'
-import SMTPTransport from "nodemailer/lib/smtp-transport";
 
-dotenv.config()
 
 
 export class NodeMailerSenderAdapter implements NotificationSender {

@@ -1,0 +1,71 @@
+services:
+  Shared.Logger:
+    class: ../../../../Contexts/Shared/infrastructure/WinstonLogger
+    arguments: []
+  NotificationService.Shared.MongoConfig:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: "createConfig"
+
+  NotificationService.Shared.RabbitMQConfig:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQConfigFactory
+      method: "createConfig"
+
+  NotificationService.Shared.domain.EventBus:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQEventBusFactory
+      method: "create"
+    arguments:
+      [
+        "@NotificationService.Shared.DomainEventFailoverPublisher",
+        "@NotificationService.Shared.RabbitMQConnection",
+        "@NotificationService.Shared.RabbitMQqueueFormatter",
+        "@NotificationService.Shared.RabbitMQConfig",
+      ]
+
+  NotificationService.Shared.ConnectionManager:
+    factory:
+      class: ../../../../Contexts/Shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: "createClient"
+    arguments: ["mooc", "@NotificationService.Shared.MongoConfig"]
+
+  NotificationService.Shared.RabbitMQQueueFormatter:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    arguments: ["mooc"]
+
+  NotificationService.Shared.RabbitMQConnection:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection
+    arguments: ["@NotificationService.Shared.RabbitMQConfig"]
+
+  NotificationService.Shared.RabbitMQqueueFormatter:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    arguments: ["mooc"]
+
+  NotificationService.Shared.RabbitMQConfigurer:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer
+    arguments:
+      [
+        "@NotificationService.Shared.RabbitMQConnection",
+        "@NotificationService.Shared.RabbitMQQueueFormatter",
+      ]
+
+  NotificationService.Shared.DomainEventFailoverPublisher:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher
+    arguments: ["@NotificationService.Shared.ConnectionManager"]
+
+  NotificationService.Shared.CommandHandlers:
+    class: ../../../../Contexts/Shared/infrastructure/CommandBus/CommandHandlers
+    arguments: ["!tagged commandHandler"]
+
+  NotificationService.Shared.domain.CommandBus:
+    class: ../../../../Contexts/Shared/infrastructure/CommandBus/InMemoryCommandBus
+    arguments: ["@NotificationService.Shared.CommandHandlers"]
+
+  NotificationService.Shared.QueryHandlers:
+    class: ../../../../Contexts/Shared/infrastructure/QueryBus/QueryHandlers
+    arguments: ["!tagged queryHandler"]
+
+  NotificationService.Shared.domain.QueryBus:
+    class: ../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
+    arguments: ["@NotificationService.Shared.QueryHandlers"]

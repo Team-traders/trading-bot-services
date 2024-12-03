@@ -1,9 +1,11 @@
 import { rabbitMQConfig } from "../config/RabbitMQConfig";
 import { EventConsumer } from "../ports/EventConsumer";
-import amqp, { Channel, Connection } from 'amqplib';
+import amqp from 'amqplib';
 import dotenv from 'dotenv'
+import path from 'path';
 
-dotenv.config()
+const envPath = path.resolve(__dirname, `.env`);
+dotenv.config({ path: envPath });
 
 export class RabbitMQConsumerAdapter implements EventConsumer {
 

@@ -7,9 +7,10 @@ export class SendMailUseCase {
     constructor(private mailSender : NodeMailerSenderAdapter) {}
 
     async execute(notification : any) : Promise<void> {
+        console.log("testest")
         const mailOptions : MailOption = {
             from: process.env.USER_MAIL || "EMPTY",
-            to : notification.recipient, // Adresse du destinataire
+            to : "samy1fergui@gmail.com", // Adresse du destinataire
             subject : process.env.SUBJECT_MAIL || "subject", // Sujet
             text : SendMailService.getTemplateMail('AlertTriggeredEvent') // Contenu de l'email
           };

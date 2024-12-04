@@ -1,9 +1,13 @@
   services:
-    NotificationService.courses.NodeMailerSender: 
+    NotificationService.NodeMailerSender: 
       class: ../../../../Contexts/notificationService/mails/infra/adapters/NodeMailerSenderAdapter
 
-    NotificationService.courses.SendEmailOnAlertTrrigeredEvent:
+    NotificationService.SendMailUsecase:
+      class: ../../../../Contexts/notificationService/mails/application/usecases/SendMailUseCase
+      arguments: ['@NotificationService.NodeMailerSender']
+
+    NotificationService.SendEmailOnAlertTrrigeredEvent:
       class: ../../../../Contexts/notificationService/mails/application/SendEmailOnAlertTrrigeredEvent
-      arguments: ['@NotificationService.courses.NodeMailerSender']
+      arguments: ['@NotificationService.SendMailUsecase']
       tags:
         - { name: 'domainEventSubscriber' }

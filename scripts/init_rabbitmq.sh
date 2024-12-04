@@ -5,4 +5,5 @@
     yarn command:mechoui3:rabbitmq
     yarn command:strategyService:rabbitmq
     yarn command:alertService:rabbitmq
+    yarn command:notificationService:rabbitmq
     yarn command:example:rabbitmq

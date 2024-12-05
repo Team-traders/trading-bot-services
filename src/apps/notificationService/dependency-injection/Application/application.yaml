@@ -1,6 +1,6 @@
   services:
     NotificationService.NodeMailerSender: 
-      class: ../../../../Contexts/notificationService/mails/infra/adapters/NodeMailerSenderAdapter
+      class: ../../../../Contexts/notificationService/mails/infrastructure/adapters/NodeMailerSenderAdapter
 
     NotificationService.SendMailUsecase:
       class: ../../../../Contexts/notificationService/mails/application/usecases/SendMailUseCase

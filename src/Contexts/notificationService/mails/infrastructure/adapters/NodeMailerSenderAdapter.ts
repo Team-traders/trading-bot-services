@@ -1,5 +1,5 @@
 import { MailOption } from "../../domain/valueObjects/MailOption";
-import { NotificationSender } from "../ports/NotificationSender";
+import { NotificationSender } from "../../infrastructure/ports/NotificationSender";
 import nodemailer from 'nodemailer';
 
 

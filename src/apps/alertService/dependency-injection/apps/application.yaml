@@ -7,6 +7,14 @@ services:
     class: ../../controllers/CoursePutController
     arguments: ['@AlertService.Shared.domain.CommandBus']
 
+  Apps.alertService.controllers.AlertPostController:
+    class: ../../controllers/AlertPostController
+    arguments: ['@AlertService.Shared.domain.CommandBus']
+
   Apps.alertService.controllers.CoursesCounterGetController:
     class: ../../controllers/CoursesCounterGetController
     arguments: ['@AlertService.Shared.domain.QueryBus']
+
+  Apps.alertService.controllers.AlertGetController:
+    class: ../../controllers/AlertGetController
+    arguments: ['@AlertService.Shared.domain.QueryBus', '@AlertService.Shared.domain.EventBus']

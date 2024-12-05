@@ -22,3 +22,14 @@ services:
     arguments: ['@AlertService.Courses.application.CourseCreator']
     tags:
       - { name: 'commandHandler' }
+
+  AlertService.courses.CreateAlertCommandHandler:
+    class: ../../../../Contexts/alertService/alerts/domain/commandHandlers/CreateAlertCommandHandler
+    arguments: ['@AlertService.alerts.domain.AlertRepository']
+    tags:
+      - { name: 'commandHandler' }
+  AlertService.courses.FindAlertsQueryHandler:
+    class: ../../../../Contexts/alertService/alerts/domain/queryHandlers/FindAlertsQueryHandler
+    arguments: ['@AlertService.alerts.domain.AlertRepository']
+    tags:
+      - { name: 'queryHandler' }

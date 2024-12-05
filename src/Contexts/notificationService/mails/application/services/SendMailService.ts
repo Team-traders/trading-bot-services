@@ -1,12 +1,14 @@
-import { rabbitMQConfig } from "../../infra/config/RabbitMQConfig";
+import { AlertTriggeredDomainEvent } from "../../../../alertService/alerts/domain/AlertDomainEvent";
+
 
 export class SendMailService {
-    static getTemplateMail(queuType : string) : string {
+
+    static createMailFactory(queuType : string) : string {
         switch (queuType) {
-            case rabbitMQConfig.queues.notificationA :
-                return 'message 1 youpi'
-            case rabbitMQConfig.queues.notificationB :
-                return 'message 2 youpi'
+            case AlertTriggeredDomainEvent.EVENT_NAME:
+                return 'Ceci est un mail pour une alerte !'
+            case "TODO" :
+                return 'Ceci est un mail pour le trading execution'
             default : 
                 throw new Error('the queue doesnt exist')
         }

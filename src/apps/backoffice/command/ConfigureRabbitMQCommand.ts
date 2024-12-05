@@ -7,16 +7,29 @@ import container from '../dependency-injection';
 
 export class ConfigureRabbitMQCommand {
   static async run() {
-    const connection = container.get<RabbitMqConnection>('Backoffice.Shared.RabbitMQConnection');
-    const nameFormatter = container.get<RabbitMQqueueFormatter>('Backoffice.Shared.RabbitMQQueueFormatter');
-    const { exchangeSettings, retryTtl } = container.get<RabbitMQConfig>('Backoffice.Shared.RabbitMQConfig');
+    const connection = container.get<RabbitMqConnection>(
+      'Backoffice.Shared.RabbitMQConnection',
+    );
+    const nameFormatter = container.get<RabbitMQqueueFormatter>(
+      'Backoffice.Shared.RabbitMQQueueFormatter',
+    );
+    const { exchangeSettings, retryTtl } = container.get<RabbitMQConfig>(
+      'Backoffice.Shared.RabbitMQConfig',
+    );
 
     await connection.connect();
 
-    const configurer = new RabbitMQConfigurer(connection, nameFormatter, retryTtl);
+    const configurer = new RabbitMQConfigurer(
+      connection,
+      nameFormatter,
+      retryTtl,
+    );
     const subscribers = DomainEventSubscribers.from(container).items;
 
-    await configurer.configure({ exchange: exchangeSettings.name, subscribers });
+    await configurer.configure({
+      exchange: exchangeSettings.name,
+      subscribers,
+    });
     await connection.close();
   }
 }

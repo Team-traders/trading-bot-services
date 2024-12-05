@@ -1,21 +1,22 @@
-import { NodeMailerSenderAdapter } from "../../infra/adapters/NodeMailerSenderAdapter";
-import { Notification } from "../../domain/entities/Notification";
+import { NodeMailerSenderAdapter } from "../../infrastructure/adapters/NodeMailerSenderAdapter";
 import { SendMailService } from "../services/SendMailService";
-import dotenv from 'dotenv'
 import { MailOption } from "../../domain/valueObjects/MailOption";
+import { AlertTriggeredDomainEvent } from "../../../../alertService/alerts/domain/AlertDomainEvent";
 
-dotenv.config();
 
 export class SendMailUseCase {
     constructor(private mailSender : NodeMailerSenderAdapter) {}
 
-    async execute(notification : any) : Promise<void> {
+    async execute(event : AlertTriggeredDomainEvent) : Promise<void> {
 
+        const mailTemplate = SendMailService.createMailFactory(event.eventName);
+
+        //il manque lde destinataire ou la personne concernée sur l'alertTriggered domain event
         const mailOptions : MailOption = {
             from: process.env.USER_MAIL || "EMPTY",
-            to : notification.recipient, // Adresse du destinataire
+            to : "samy1fergui@gmail.com", // Adresse du destinataire
             subject : process.env.SUBJECT_MAIL || "subject", // Sujet
-            text : SendMailService.getTemplateMail('AlertTriggeredEvent') // Contenu de l'email
+            text : mailTemplate // Contenu de l'email
           };
           
         await this.mailSender.send(mailOptions);

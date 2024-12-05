@@ -14,6 +14,19 @@ import {
   Symbol,
 } from './AlertValueObjects/ValueObjects';
 
+type AlertProps = {
+  symbol: Symbol;
+  alertType: AlertType;
+  alertPrice: AlertPrice;
+  triggerCondition: TriggerCondition;
+  title: AlertTitle;
+  message: AlertMessage;
+  status?: AlertStatus; // Optional, defaults to 'ACTIVE'
+  linkedOrderId?: LinkedOrderId | null; // Optional, defaults to null
+  createdAt?: AlertDate; // Optional, defaults to current date
+  updatedAt?: AlertDate; // Optional, defaults to current date
+};
+
 export class Alert extends AggregateRoot {
   readonly id: AlertId;
   readonly symbol: Symbol;
@@ -54,18 +67,18 @@ export class Alert extends AggregateRoot {
     this.updatedAt = updatedAt;
   }
 
-  static create(
-    symbol: Symbol,
-    linkedOrderId: LinkedOrderId | null,
-    alertType: AlertType,
-    alertPrice: AlertPrice,
-    triggerCondition: TriggerCondition,
-    title: AlertTitle,
-    message: AlertMessage,
-    status: AlertStatus = new AlertStatus('ACTIVE'),
-    createdAt: AlertDate = new AlertDate(new Date(Date.now())),
-    updatedAt: AlertDate = new AlertDate(new Date(Date.now())),
-  ): Alert {
+  static create({
+    symbol,
+    alertType,
+    alertPrice,
+    triggerCondition,
+    title,
+    message,
+    status = new AlertStatus('ACTIVE'),
+    linkedOrderId = null,
+    createdAt = new AlertDate(new Date(Date.now())),
+    updatedAt = new AlertDate(new Date(Date.now())),
+  }: AlertProps): Alert {
     const id = AlertId.random();
 
     return new Alert(
@@ -113,7 +126,19 @@ export class Alert extends AggregateRoot {
     );
   }
 
-  toPrimitives() {
+  toPrimitives(): {
+    _id: string;
+    symbol: string;
+    linkedOrderId: string | null;
+    alertType: string;
+    alertPrice: number;
+    triggerCondition: string;
+    status: string;
+    title: string;
+    message: string;
+    createdAt: Date;
+    updatedAt: Date;
+  } {
     return {
       _id: this.id.value,
       symbol: this.symbol.value,
@@ -124,8 +149,8 @@ export class Alert extends AggregateRoot {
       status: this.status.value,
       title: this.title.value,
       message: this.message.value,
-      createdAt: this.createdAt.value.toISOString(),
-      updatedAt: this.updatedAt.value.toISOString(),
+      createdAt: this.createdAt.value,
+      updatedAt: this.updatedAt.value,
     };
   }
 }

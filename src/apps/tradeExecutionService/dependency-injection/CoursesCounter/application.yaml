@@ -1,0 +1,24 @@
+services:
+  TradeExecutionService.CoursesCounter.CoursesCounterRepository:
+    class: ../../../../Contexts/Mooc/CoursesCounter/infrastructure/persistence/mongo/MongoCoursesCounterRepository
+    arguments: ['@TradeExecutionService.Shared.ConnectionManager']
+
+  TradeExecutionService.CoursesCounter.CoursesCounterIncrementer:
+    class: ../../../../Contexts/Mooc/CoursesCounter/application/Increment/CoursesCounterIncrementer
+    arguments: ['@TradeExecutionService.CoursesCounter.CoursesCounterRepository', '@TradeExecutionService.Shared.domain.EventBus']
+
+  TradeExecutionService.CoursesCounter.IncrementCoursesCounterOnCourseCreated:
+    class: ../../../../Contexts/tradeExecutionService/Courses/application/Create/CreateBackofficeCourseOnCourseCreated3
+    arguments: ['@TradeExecutionService.CoursesCounter.CoursesCounterIncrementer']
+    tags:
+      - { name: 'domainEventSubscriber' }
+
+  TradeExecutionService.CoursesCounter.CoursesCounterFinder:
+    class: ../../../../Contexts/Mooc/CoursesCounter/application/Find/CoursesCounterFinder
+    arguments: ['@TradeExecutionService.CoursesCounter.CoursesCounterRepository']
+
+  TradeExecutionService.CoursesCounter.FindCoursesCounterQueryHandler:
+    class: ../../../../Contexts/Mooc/CoursesCounter/application/Find/FindCoursesCounterQueryHandler
+    arguments: ['@TradeExecutionService.CoursesCounter.CoursesCounterFinder']
+    tags:
+      - { name: 'queryHandler' }

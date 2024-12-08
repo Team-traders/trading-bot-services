@@ -1,0 +1,64 @@
+services:
+  TradeExecutionService.Shared.MongoConfig:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  TradeExecutionService.Shared.RabbitMQConfig:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQConfigFactory
+      method: 'createConfig'
+
+  TradeExecutionService.Shared.domain.EventBus:
+    factory:
+      class: ../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQEventBusFactory
+      method: 'create'
+    arguments:
+      [
+        '@TradeExecutionService.Shared.DomainEventFailoverPublisher',
+        '@TradeExecutionService.Shared.RabbitMQConnection',
+        '@TradeExecutionService.Shared.RabbitMQqueueFormatter',
+        '@TradeExecutionService.Shared.RabbitMQConfig'
+      ]
+
+  TradeExecutionService.Shared.ConnectionManager:
+    factory:
+      class: ../../../../Contexts/Shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['mooc', '@TradeExecutionService.Shared.MongoConfig']
+
+  TradeExecutionService.Shared.RabbitMQQueueFormatter:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    arguments: ['mooc']
+
+  TradeExecutionService.Shared.RabbitMQConnection:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection
+    arguments: ['@TradeExecutionService.Shared.RabbitMQConfig']
+
+  TradeExecutionService.Shared.RabbitMQqueueFormatter:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    arguments: ['mooc']
+
+  TradeExecutionService.Shared.RabbitMQConfigurer:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer
+    arguments: ["@TradeExecutionService.Shared.RabbitMQConnection", "@TradeExecutionService.Shared.RabbitMQQueueFormatter"]
+
+  TradeExecutionService.Shared.DomainEventFailoverPublisher:
+    class: ../../../../Contexts/Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher
+    arguments: ['@TradeExecutionService.Shared.ConnectionManager']
+
+  TradeExecutionService.Shared.CommandHandlers:
+    class: ../../../../Contexts/Shared/infrastructure/CommandBus/CommandHandlers
+    arguments: ['!tagged commandHandler']
+
+  TradeExecutionService.Shared.domain.CommandBus:
+    class: ../../../../Contexts/Shared/infrastructure/CommandBus/InMemoryCommandBus
+    arguments: ['@TradeExecutionService.Shared.CommandHandlers']
+
+  TradeExecutionService.Shared.QueryHandlers:
+    class: ../../../../Contexts/Shared/infrastructure/QueryBus/QueryHandlers
+    arguments: ['!tagged queryHandler']
+
+  TradeExecutionService.Shared.domain.QueryBus:
+    class: ../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
+    arguments: ['@TradeExecutionService.Shared.QueryHandlers']

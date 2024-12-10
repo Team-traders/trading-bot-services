@@ -3,10 +3,11 @@ import { InvalidArgumentError } from '../../../../Shared/domain/value-object/Inv
 
 export type OrderStatusEnum = 'ACTIVE' | 'CLOSED';
 
-export class OrderStatus extends EnumValueObject<string> {
+export class OrderStatus extends EnumValueObject<OrderStatusEnum> {
   constructor(value: OrderStatusEnum) {
     super(value, ['ACTIVE', 'CLOSED']);
   }
+  
 
   protected throwErrorForInvalidValue(value: string): void {
     throw new InvalidArgumentError(`<${value}> is not a valid order status`);

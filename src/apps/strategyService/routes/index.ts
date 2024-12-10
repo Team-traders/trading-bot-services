@@ -1,15 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { ValidationError, validationResult } from 'express-validator';
 import { StatusCodes as httpStatus } from 'http-status-codes';
-import { registerStatusRoutes } from './status.route';
-import { registerCoursesCounterRoutes } from './courses-counter.route';
-import { registerCoursesRoutes } from './courses.route';
+import { registerOrderRoutes } from './order.route';
 
 export function registerRoutes(): Router {
   const router = Router();
-  router.use(registerStatusRoutes());
-  router.use(registerCoursesCounterRoutes());
-  router.use(registerCoursesRoutes());
+  router.use(registerOrderRoutes());
 
   return router;
 }

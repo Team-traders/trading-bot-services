@@ -16,6 +16,13 @@ services:
     arguments: ['@AlertService.alerts.domain.AlertRepository']
     tags:
       - { name: 'domainEventSubscriber' }
+  
+  AlertService.courses.TriggerAlertOnPriceUpdateDomainEvent:
+   class: ../../../../Contexts/alertService/alerts/application/eventHandlers/TriggerAlertOnPriceUpdateDomainEvent
+   arguments: ['@AlertService.alerts.domain.AlertRepository', '@AlertService.Shared.domain.EventBus']
+   tags:
+     - { name: 'domainEventSubscriber' }
+
 
   AlertService.courses.CreateCourseCommandHandler:
     class: ../../../../Contexts/Mooc/Courses/application/Create/CreateCourseCommandHandler
@@ -24,12 +31,12 @@ services:
       - { name: 'commandHandler' }
 
   AlertService.courses.CreateAlertCommandHandler:
-    class: ../../../../Contexts/alertService/alerts/domain/commandHandlers/CreateAlertCommandHandler
+    class: ../../../../Contexts/alertService/alerts/application/commandHandlers/CreateAlertCommandHandler
     arguments: ['@AlertService.alerts.domain.AlertRepository']
     tags:
       - { name: 'commandHandler' }
   AlertService.courses.FindAlertsQueryHandler:
-    class: ../../../../Contexts/alertService/alerts/domain/queryHandlers/FindAlertsQueryHandler
+    class: ../../../../Contexts/alertService/alerts/application/queryHandlers/FindAlertsQueryHandler
     arguments: ['@AlertService.alerts.domain.AlertRepository']
     tags:
       - { name: 'queryHandler' }

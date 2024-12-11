@@ -1,8 +1,7 @@
 import { Query } from '../../../../Shared/domain/Query';
 import { QueryHandler } from '../../../../Shared/domain/QueryHandler';
-import { AlertRepository } from '../AlertRepository';
-import { FindAlertsQuery } from '../queries/FindAlertsQuery';
-
+import { AlertRepository } from '../../domain/AlertRepository';
+import { FindAlertsQuery } from '../../domain/queries/FindAlertsQuery';
 export type FindAlertsResponse = {
   _id: string;
   symbol: string;
@@ -27,8 +26,13 @@ export class FindAlertsQueryHandler
   }
 
   async handle(_query: FindAlertsQuery): Promise<FindAlertsResponse[]> {
-    const alerts = await this.alertRepo.find();
-    console.log('mechoui .com : ', alerts);
-    return alerts.map((alert) => alert.toPrimitives());
+    try {
+      const alerts = await this.alertRepo.find();
+      return alerts.map((alert) => alert.toPrimitives());
+    } catch (error) {
+      console.log('FindAlertsQueryHandler :');
+      console.log(error);
+      return [];
+    }
   }
 }

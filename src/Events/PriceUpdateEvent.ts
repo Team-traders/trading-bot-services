@@ -1,10 +1,8 @@
-import { DomainEvent } from "../Contexts/Shared/domain/DomainEvent";
-
+import { DomainEvent } from '../Contexts/Shared/domain/DomainEvent';
 
 type PriceUpdateData = {
   readonly symbol: string;
   readonly price: number;
-  readonly timestamp: string;
 };
 
 type PriceUpdateDomainEventAttributes = {
@@ -27,7 +25,12 @@ export class PriceUpdateDomainEvent extends DomainEvent {
     eventId?: string;
     occurredOn?: Date;
   }) {
-    super({ eventName: PriceUpdateDomainEvent.EVENT_NAME, aggregateId, eventId, occurredOn });
+    super({
+      eventName: PriceUpdateDomainEvent.EVENT_NAME,
+      aggregateId,
+      eventId,
+      occurredOn,
+    });
     this.data = data;
   }
 

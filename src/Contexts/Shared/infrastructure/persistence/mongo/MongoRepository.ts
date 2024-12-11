@@ -36,6 +36,32 @@ export abstract class MongoRepository<T extends AggregateRoot> {
     );
   }
 
+  protected async persistAll(
+    aggregates: { id: string; aggregateRoot: T }[],
+  ): Promise<void> {
+    const collection = await this.collection();
+
+    const bulkOps = aggregates.map(({ id, aggregateRoot }) => {
+      const document = {
+        ...aggregateRoot.toPrimitives(),
+        _id: undefined,
+        id: undefined,
+      };
+
+      return {
+        updateOne: {
+          filter: { _id: new ObjectId(id) },
+          update: { $set: document },
+          upsert: true,
+        },
+      };
+    });
+
+    if (bulkOps.length > 0) {
+      await collection.bulkWrite(bulkOps);
+    }
+  }
+
   protected async searchByCriteria<D extends Document>(
     criteria: Criteria,
   ): Promise<D[]> {

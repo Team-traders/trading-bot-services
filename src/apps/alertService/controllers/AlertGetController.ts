@@ -4,10 +4,10 @@ import { CoursesCounterNotExist } from '../../../Contexts/Mooc/CoursesCounter/do
 import { QueryBus } from '../../../Contexts/Shared/domain/QueryBus';
 import { Controller } from './Controller';
 import { FindAlertsQuery } from '../../../Contexts/alertService/alerts/domain/queries/FindAlertsQuery';
-import { FindAlertsResponse } from '../../../Contexts/alertService/alerts/domain/queryHandlers/FindAlertsQueryHandler';
 import { EventBus } from '../../../Contexts/Shared/domain/EventBus';
 import { AlertTriggeredDomainEvent } from '../../../Contexts/alertService/alerts/domain/AlertDomainEvent';
 import { CourseCreatedDomainEvent } from '../../../Contexts/Mooc/Courses/domain/CourseCreatedDomainEvent';
+import { FindAlertsResponse } from '../../../Contexts/alertService/alerts/application/queryHandlers/FindAlertsQueryHandler';
 
 export class AlertGetController implements Controller {
   constructor(

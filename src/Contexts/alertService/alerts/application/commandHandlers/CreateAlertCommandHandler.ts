@@ -1,15 +1,18 @@
 import { CommandHandler } from '../../../../Shared/domain/CommandHandler';
 import { Command } from '../../../../Shared/domain/Command';
-import { CreateAlertCommand } from '../../domain//commands/CreateAlertCommand';
+import { CreateAlertCommand } from '../../domain/commands/CreateAlertCommand';
 import {
   Symbol,
   AlertPrice,
   AlertTitle,
   AlertMessage,
 } from '../../domain/AlertValueObjects/ValueObjects';
-import { AlertType, TriggerCondition } from '../AlertValueObjects/Enums';
-import { AlertRepository } from '../AlertRepository';
-import { Alert } from '../Alert';
+import {
+  AlertType,
+  TriggerCondition,
+} from '../../domain/AlertValueObjects/Enums';
+import { AlertRepository } from '../../domain/AlertRepository';
+import { Alert } from '../../domain/Alert';
 
 export class CreateAlertCommandHandler
   implements CommandHandler<CreateAlertCommand>
@@ -23,7 +26,9 @@ export class CreateAlertCommandHandler
   async handle(command: CreateAlertCommand): Promise<void> {
     const symbol = new Symbol(command.symbol);
     const alertPrice = new AlertPrice(command.alertPrice);
-    const triggerCondition = new TriggerCondition(command.triggerCondition);
+    const triggerCondition = new TriggerCondition(
+      command.triggerCondition || 'LTE',
+    );
     const emailTitle = new AlertTitle(command.emailTitle);
     const emailMessage = new AlertMessage(command.emailMessage);
     const alertType = new AlertType('NOTIFICATION');

@@ -30,6 +30,12 @@ export class MongoAlertRepository
     return this.persist(alert.id.value, alert);
   }
 
+  public async saveAll(alerts: Alert[]): Promise<void> {
+    return this.persistAll(
+      alerts.map((alert) => ({ id: alert.id.value, aggregateRoot: alert })),
+    );
+  }
+
   protected collectionName(): string {
     return 'alerts';
   }

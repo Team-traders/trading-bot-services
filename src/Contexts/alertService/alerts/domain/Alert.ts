@@ -15,6 +15,7 @@ import {
 } from './AlertValueObjects/ValueObjects';
 
 type AlertProps = {
+  id?: AlertId;
   symbol: Symbol;
   alertType: AlertType;
   alertPrice: AlertPrice;
@@ -68,6 +69,7 @@ export class Alert extends AggregateRoot {
   }
 
   static create({
+    id,
     symbol,
     alertType,
     alertPrice,
@@ -79,10 +81,10 @@ export class Alert extends AggregateRoot {
     createdAt = new AlertDate(new Date(Date.now())),
     updatedAt = new AlertDate(new Date(Date.now())),
   }: AlertProps): Alert {
-    const id = AlertId.random();
+    const randomId = id || AlertId.random();
 
     return new Alert(
-      id,
+      randomId,
       symbol,
       linkedOrderId,
       alertType,

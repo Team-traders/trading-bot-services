@@ -10,6 +10,8 @@ import { AlertStatus } from '../../domain/AlertValueObjects/Enums';
 export class TriggerAlertOnPriceUpdateDomainEvent
   implements DomainEventSubscriber<PriceUpdateDomainEvent>
 {
+  private readonly batchSize = 1000;
+
   constructor(
     private readonly alertRepo: AlertRepository,
     private readonly eventBus: EventBus,
@@ -21,26 +23,20 @@ export class TriggerAlertOnPriceUpdateDomainEvent
 
   async on(domainEvent: PriceUpdateDomainEvent): Promise<void> {
     const { data: prices } = domainEvent;
+    const priceBatches = this.chunkArray(prices, this.batchSize);
 
     try {
-      const matchingAlerts = await this.findMatchingAlerts(prices);
+      for (const batch of priceBatches) {
+        const matchingAlerts = await this.findMatchingAlerts(batch);
 
-      if (matchingAlerts.length === 0) return;
-
-      const events = matchingAlerts.map((alert) =>
-        this.createAlertTriggeredEvent(alert),
-      );
-
-      await this.eventBus.publish(events);
-      await this.alertRepo.saveAll(
-        matchingAlerts.map<Alert>((a) =>
-          Alert.create({ ...a, status: new AlertStatus('TRIGGERED') }),
-        ),
-      );
-
-      console.log(`Triggered ${events.length} alert(s).`);
+        if (matchingAlerts.length > 0) {
+          //sends events and set status to `TRIGGERED`
+          await this.processMatchingAlerts(matchingAlerts);
+        }
+        console.log(`Triggered ${matchingAlerts.length} alert(s).`);
+      }
     } catch (error) {
-      console.error('Error processing price update:', error);
+      console.error('Error processing price update batch:', error);
     }
   }
 
@@ -65,6 +61,18 @@ export class TriggerAlertOnPriceUpdateDomainEvent
     return this.alertRepo.find({ $or: orConditions });
   }
 
+  private async processMatchingAlerts(alerts: Alert[]): Promise<void> {
+    const events = alerts.map((alert) => this.createAlertTriggeredEvent(alert));
+
+    await this.eventBus.publish(events);
+
+    const updatedAlerts = alerts.map<Alert>((a) =>
+      Alert.create({ ...a, status: new AlertStatus('TRIGGERED') }),
+    );
+
+    await this.alertRepo.saveAll(updatedAlerts);
+  }
+
   private createAlertTriggeredEvent(alert: Alert): AlertTriggeredDomainEvent {
     const { linkedOrderId, symbol, alertType, alertPrice, _id } =
       alert.toPrimitives();
@@ -77,5 +85,11 @@ export class TriggerAlertOnPriceUpdateDomainEvent
       alertPrice,
       occurredOn: new Date(),
     });
+  }
+
+  private chunkArray<T>(array: T[], chunkSize: number): T[][] {
+    return Array.from({ length: Math.ceil(array.length / chunkSize) }, (_, i) =>
+      array.slice(i * chunkSize, i * chunkSize + chunkSize),
+    );
   }
 }

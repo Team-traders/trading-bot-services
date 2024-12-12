@@ -1,6 +1,6 @@
 import { DomainEvent } from '../Contexts/Shared/domain/DomainEvent';
 
-type PriceUpdateData = {
+export type PriceUpdateData = {
   readonly symbol: string;
   readonly price: number;
 };

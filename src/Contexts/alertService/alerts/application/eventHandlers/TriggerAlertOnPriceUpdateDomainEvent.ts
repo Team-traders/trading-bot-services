@@ -90,10 +90,45 @@ export class TriggerAlertOnPriceUpdateDomainEvent
     const events = alerts.map((alert) => this.createAlertTriggeredEvent(alert));
     await this.eventBus.publish(events);
 
-    const updatedAlerts = alerts.map<Alert>((a) =>
-      Alert.create({ ...a, status: new AlertStatus('TRIGGERED') }),
-    );
-    await this.alertRepository.saveAll(updatedAlerts);
+    for (const alert of alerts) {
+      await this.handleAlertStatusChange(alert);
+    }
+  }
+
+  private async handleAlertStatusChange(alert: Alert): Promise<void> {
+    const linkedOrderId = alert.toPrimitives().linkedOrderId;
+    let linkedAlerts: Alert[] = [];
+
+    if (linkedOrderId) {
+      linkedAlerts = await this.alertRepository.find({ linkedOrderId });
+    }
+
+    if (alert.alertType.value === 'ENTRY') {
+      // Set ENTRY alert to Triggered and activate linked TP/Stop Loss
+      alert.updateStatus(new AlertStatus('TRIGGERED'));
+
+      const updatedLinkedAlerts = linkedAlerts
+        .filter((linkedAlert) => linkedAlert.alertType.value !== 'ENTRY')
+        .map((linkedAlert) =>
+          linkedAlert.updateStatus(new AlertStatus('ACTIVE')),
+        );
+
+      await this.alertRepository.saveAll([...updatedLinkedAlerts, alert]);
+    } else if (
+      alert.alertType.value === 'TAKE_PROFIT' ||
+      alert.alertType.value === 'STOP_LOSS'
+    ) {
+      // Set current alert to Triggered and others to Inactive
+      alert.updateStatus(new AlertStatus('TRIGGERED'));
+
+      const updatedLinkedAlerts = linkedAlerts
+        .filter((linkedAlert) => linkedAlert.id !== alert.id)
+        .map((linkedAlert) =>
+          linkedAlert.updateStatus(new AlertStatus('INACTIVE')),
+        );
+
+      await this.alertRepository.saveAll([...updatedLinkedAlerts, alert]);
+    }
   }
 
   private createAlertTriggeredEvent(alert: Alert): AlertTriggeredDomainEvent {

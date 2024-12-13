@@ -16,6 +16,12 @@ services:
     arguments: ['@AlertService.alerts.domain.AlertRepository']
     tags:
       - { name: 'domainEventSubscriber' }
+
+  AlertService.courses.CreateAlertsOnOrderPlacedEvent:
+    class: ../../../../Contexts/alertService/alerts/application/eventHandlers/CreateAlertsOnOrderPlacedEvent
+    arguments: ['@AlertService.alerts.domain.AlertRepository']
+    tags:
+      - { name: 'domainEventSubscriber' }
   
   AlertService.courses.TriggerAlertOnPriceUpdateDomainEvent:
    class: ../../../../Contexts/alertService/alerts/application/eventHandlers/TriggerAlertOnPriceUpdateDomainEvent

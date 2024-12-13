@@ -17,7 +17,7 @@ import {
 type AlertProps = {
   id?: AlertId;
   symbol: Symbol;
-  alertType: AlertType;
+  alertType?: AlertType;
   alertPrice: AlertPrice;
   triggerCondition: TriggerCondition;
   title: AlertTitle;
@@ -35,7 +35,7 @@ export class Alert extends AggregateRoot {
   readonly alertType: AlertType;
   readonly alertPrice: AlertPrice;
   readonly triggerCondition: TriggerCondition;
-  readonly status: AlertStatus;
+  status: AlertStatus;
   readonly title: AlertTitle;
   readonly message: AlertMessage;
   readonly createdAt: AlertDate;
@@ -87,7 +87,7 @@ export class Alert extends AggregateRoot {
       randomId,
       symbol,
       linkedOrderId,
-      alertType,
+      alertType || new AlertType('NOTIFICATION'),
       alertPrice,
       triggerCondition,
       status,
@@ -102,7 +102,7 @@ export class Alert extends AggregateRoot {
     _id: string;
     symbol: string;
     linkedOrderId: string | null;
-    alertType: 'TAKE_PROFIT' | 'STOP_LOSS' | 'NOTIFICATION';
+    alertType: 'TAKE_PROFIT' | 'STOP_LOSS' | 'NOTIFICATION' | 'ENTRY';
     alertPrice: number;
     triggerCondition: 'GTE' | 'LTE';
     status: 'ACTIVE' | 'TRIGGERED' | 'INACTIVE';
@@ -126,6 +126,11 @@ export class Alert extends AggregateRoot {
       new AlertDate(new Date(plainData.createdAt)),
       new AlertDate(new Date(plainData.updatedAt)),
     );
+  }
+
+  updateStatus(status: AlertStatus): Alert {
+    this.status = status;
+    return this;
   }
 
   toPrimitives(): {

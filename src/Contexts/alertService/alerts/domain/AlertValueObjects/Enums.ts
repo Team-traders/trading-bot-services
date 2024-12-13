@@ -1,12 +1,16 @@
 import { EnumValueObject } from '../../../../Shared/domain/value-object/EnumValueObject';
 
-export type AlertTypeEnum = 'TAKE_PROFIT' | 'STOP_LOSS' | 'NOTIFICATION';
+export type AlertTypeEnum =
+  | 'TAKE_PROFIT'
+  | 'STOP_LOSS'
+  | 'NOTIFICATION'
+  | 'ENTRY';
 export type TriggerConditionEnum = 'GTE' | 'LTE';
 export type AlertStatusEnum = 'ACTIVE' | 'TRIGGERED' | 'INACTIVE';
 
 export class AlertType extends EnumValueObject<AlertTypeEnum> {
   constructor(value: AlertTypeEnum) {
-    super(value, ['TAKE_PROFIT', 'STOP_LOSS', 'NOTIFICATION']);
+    super(value, ['TAKE_PROFIT', 'STOP_LOSS', 'NOTIFICATION', 'ENTRY']);
   }
 
   protected throwErrorForInvalidValue(value: AlertTypeEnum): void {

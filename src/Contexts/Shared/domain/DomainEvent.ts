@@ -14,9 +14,9 @@ export abstract class DomainEvent {
   readonly occurredOn: Date;
   readonly eventName: string;
 
-  constructor(params: { eventName: string; aggregateId: string; eventId?: string; occurredOn?: Date }) {
+  constructor(params: { eventName: string; aggregateId?: string; eventId?: string; occurredOn?: Date }) {
     const { aggregateId, eventName, eventId, occurredOn } = params;
-    this.aggregateId = aggregateId;
+    this.aggregateId = aggregateId || Uuid.random().value;;
     this.eventId = eventId || Uuid.random().value;
     this.occurredOn = occurredOn || new Date();
     this.eventName = eventName;

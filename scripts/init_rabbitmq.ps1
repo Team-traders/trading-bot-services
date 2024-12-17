@@ -4,11 +4,11 @@ Write-Output "Running RabbitMQ setup commands..."
 Start-Sleep -Seconds 5
 
 # # Run RabbitMQ setup commands
-npm run command:mooc:rabbitmq
-npm run command:backoffice:rabbitmq
-npm run command:mechoui:rabbitmq
-npm run command:mechoui3:rabbitmq
-npm run command:strategyService:rabbitmq
-npm run command:alertService:rabbitmq
-npm run command:notificationService:rabbitmq
-npm run command:example:rabbitmq
+npm run windows:command:mooc:rabbitmq
+npm run windows:command:backoffice:rabbitmq
+npm run windows:command:pricingService:rabbitmq
+npm run windows:command:mechoui3:rabbitmq
+npm run windows:command:strategyService:rabbitmq
+npm run windows:command:alertService:rabbitmq
+npm run windows:command:notificationService:rabbitmq
+npm run windows:command:example:rabbitmq

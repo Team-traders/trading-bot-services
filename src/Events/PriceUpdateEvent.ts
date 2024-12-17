@@ -20,7 +20,7 @@ export class PriceUpdateDomainEvent extends DomainEvent {
     eventId,
     occurredOn,
   }: {
-    aggregateId: string;
+    aggregateId?: string;
     data: PriceUpdateData[];
     eventId?: string;
     occurredOn?: Date;

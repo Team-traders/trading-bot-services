@@ -1,4 +1,10 @@
-import { Document, Filter, FindOptions } from 'mongodb';
+import {
+  DeleteOptions,
+  DeleteResult,
+  Document,
+  Filter,
+  FindOptions,
+} from 'mongodb';
 import { MongoRepository } from '../../../../Shared/infrastructure/persistence/mongo/MongoRepository';
 import { Alert } from '../../domain/Alert';
 import { AlertRepository } from '../../domain/AlertRepository';
@@ -85,5 +91,14 @@ export class MongoAlertRepository
         updatedAt: document.updatedAt.toISOString(),
       }),
     );
+  }
+
+  public async deleteOne(
+    filter?: Filter<Document>,
+    options?: DeleteOptions,
+  ): Promise<DeleteResult> {
+    const collection = await this.collection();
+    const deleteResult = await collection.deleteOne(filter, options);
+    return deleteResult;
   }
 }

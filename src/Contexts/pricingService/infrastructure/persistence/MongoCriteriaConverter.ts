@@ -1,8 +1,8 @@
-import { Criteria } from '../../../../Shared/domain/criteria/Criteria';
-import { Filter } from '../../../../Shared/domain/criteria/Filter';
-import { Operator } from '../../../../Shared/domain/criteria/FilterOperator';
-import { Filters } from '../../../../Shared/domain/criteria/Filters';
-import { Order } from '../../../../Shared/domain/criteria/Order';
+import { Criteria } from '../../../Shared/domain/criteria/Criteria';
+import { Filter } from '../../../Shared/domain/criteria/Filter';
+import { Operator } from '../../../Shared/domain/criteria/FilterOperator';
+import { Filters } from '../../../Shared/domain/criteria/Filters';
+import { Order } from '../../../Shared/domain/criteria/Order';
 
 type MongoFilterOperator = '$eq' | '$ne' | '$gt' | '$lt' | '$regex';
 type MongoFilterValue = boolean | string | number;

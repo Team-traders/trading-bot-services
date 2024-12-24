@@ -5,7 +5,7 @@ import { BackofficeCourseName } from '../../domain/BackofficeCourseName';
 import { BackofficeCourseRepository } from '../../domain/BackofficeCourseRepository';
 
 export class BackofficeCourseCreator {
-  constructor(private backofficeCourseRepository: BackofficeCourseRepository) {}
+  constructor(private backofficeCourseRepository: BackofficeCourseRepository) { }
 
   async run(id: string, duration: string, name: string) {
     const course = new BackofficeCourse(

@@ -5,7 +5,7 @@ import { CoursesCounterGetController } from '../controllers/CoursesCounterGetCon
 export const registerCoursesCounterRoutes = (): Router => {
   const router = Router();
   const coursesCounterGetController: CoursesCounterGetController = container.get(
-    'Apps.mechoui3.controllers.CoursesCounterGetController'
+    'Apps.pricingService.controllers.CoursesCounterGetController'
   );
   router.get('/courses-counter', (req: Request, res: Response) => coursesCounterGetController.run(req, res));
 

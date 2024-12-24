@@ -1,24 +1,24 @@
 services:
-  Mechoui3.CoursesCounter.CoursesCounterRepository:
+  PricingService.CoursesCounter.CoursesCounterRepository:
     class: ../../../../Contexts/Mooc/CoursesCounter/infrastructure/persistence/mongo/MongoCoursesCounterRepository
-    arguments: ['@Mechoui3.Shared.ConnectionManager']
+    arguments: ['@PricingService.Shared.ConnectionManager']
 
-  Mechoui3.CoursesCounter.CoursesCounterIncrementer:
+  PricingService.CoursesCounter.CoursesCounterIncrementer:
     class: ../../../../Contexts/Mooc/CoursesCounter/application/Increment/CoursesCounterIncrementer
-    arguments: ['@Mechoui3.CoursesCounter.CoursesCounterRepository', '@Mechoui3.Shared.domain.EventBus']
+    arguments: ['@PricingService.CoursesCounter.CoursesCounterRepository', '@PricingService.Shared.domain.EventBus']
 
-  Mechoui3.CoursesCounter.IncrementCoursesCounterOnCourseCreated:
-    class: ../../../../Contexts/mechoui3/Courses/application/Create/CreateBackofficeCourseOnCourseCreated3
-    arguments: ['@Mechoui3.CoursesCounter.CoursesCounterIncrementer']
+  PricingService.CoursesCounter.IncrementCoursesCounterOnCourseCreated:
+    class: ../../../../Contexts/pricingService/application/Create/CreateBackofficeCourseOnCourseCreated3
+    arguments: ['@PricingService.CoursesCounter.CoursesCounterIncrementer']
     tags:
       - { name: 'domainEventSubscriber' }
 
-  Mechoui3.CoursesCounter.CoursesCounterFinder:
+  PricingService.CoursesCounter.CoursesCounterFinder:
     class: ../../../../Contexts/Mooc/CoursesCounter/application/Find/CoursesCounterFinder
-    arguments: ['@Mechoui3.CoursesCounter.CoursesCounterRepository']
+    arguments: ['@PricingService.CoursesCounter.CoursesCounterRepository']
 
-  Mechoui3.CoursesCounter.FindCoursesCounterQueryHandler:
+  PricingService.CoursesCounter.FindCoursesCounterQueryHandler:
     class: ../../../../Contexts/Mooc/CoursesCounter/application/Find/FindCoursesCounterQueryHandler
-    arguments: ['@Mechoui3.CoursesCounter.CoursesCounterFinder']
+    arguments: ['@PricingService.CoursesCounter.CoursesCounterFinder']
     tags:
       - { name: 'queryHandler' }

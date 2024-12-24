@@ -1,12 +1,12 @@
 services:
-  Apps.mechoui3.controllers.StatusGetController:
+  Apps.pricingService.controllers.StatusGetController:
     class: ../../controllers/StatusGetController
     arguments: []
 
-  Apps.mechoui3.controllers.CoursePutController:
+  Apps.pricingService.controllers.CoursePutController:
     class: ../../controllers/CoursePutController
-    arguments: ['@Mechoui3.Shared.domain.CommandBus']
+    arguments: ['@PricingService.Shared.domain.CommandBus']
 
-  Apps.mechoui3.controllers.CoursesCounterGetController:
+  Apps.pricingService.controllers.CoursesCounterGetController:
     class: ../../controllers/CoursesCounterGetController
-    arguments: ['@Mechoui3.Shared.domain.QueryBus']
+    arguments: ['@PricingService.Shared.domain.QueryBus']

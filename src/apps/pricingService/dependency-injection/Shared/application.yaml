@@ -1,64 +1,64 @@
 services:
-  Mechoui3.Shared.MongoConfig:
+  PricingService.Shared.MongoConfig:
     factory:
       class: ../../../../Contexts/Mooc/Shared/infrastructure/persistence/mongo/MongoConfigFactory
       method: 'createConfig'
 
-  Mechoui3.Shared.RabbitMQConfig:
+  PricingService.Shared.RabbitMQConfig:
     factory:
       class: ../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQConfigFactory
       method: 'createConfig'
 
-  Mechoui3.Shared.domain.EventBus:
+  PricingService.Shared.domain.EventBus:
     factory:
       class: ../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQEventBusFactory
       method: 'create'
     arguments:
       [
-        '@Mechoui3.Shared.DomainEventFailoverPublisher',
-        '@Mechoui3.Shared.RabbitMQConnection',
-        '@Mechoui3.Shared.RabbitMQqueueFormatter',
-        '@Mechoui3.Shared.RabbitMQConfig'
+        '@PricingService.Shared.DomainEventFailoverPublisher',
+        '@PricingService.Shared.RabbitMQConnection',
+        '@PricingService.Shared.RabbitMQqueueFormatter',
+        '@PricingService.Shared.RabbitMQConfig'
       ]
 
-  Mechoui3.Shared.ConnectionManager:
+  PricingService.Shared.ConnectionManager:
     factory:
       class: ../../../../Contexts/Shared/infrastructure/persistence/mongo/MongoClientFactory
       method: 'createClient'
-    arguments: ['mooc', '@Mechoui3.Shared.MongoConfig']
+    arguments: ['mooc', '@PricingService.Shared.MongoConfig']
 
-  Mechoui3.Shared.RabbitMQQueueFormatter:
+  PricingService.Shared.RabbitMQQueueFormatter:
     class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
     arguments: ['mooc']
 
-  Mechoui3.Shared.RabbitMQConnection:
+  PricingService.Shared.RabbitMQConnection:
     class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection
-    arguments: ['@Mechoui3.Shared.RabbitMQConfig']
+    arguments: ['@PricingService.Shared.RabbitMQConfig']
 
-  Mechoui3.Shared.RabbitMQqueueFormatter:
+  PricingService.Shared.RabbitMQqueueFormatter:
     class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
     arguments: ['mooc']
 
-  Mechoui3.Shared.RabbitMQConfigurer:
+  PricingService.Shared.RabbitMQConfigurer:
     class: ../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer
-    arguments: ["@Mechoui3.Shared.RabbitMQConnection", "@Mechoui3.Shared.RabbitMQQueueFormatter"]
+    arguments: ["@PricingService.Shared.RabbitMQConnection", "@PricingService.Shared.RabbitMQQueueFormatter"]
 
-  Mechoui3.Shared.DomainEventFailoverPublisher:
+  PricingService.Shared.DomainEventFailoverPublisher:
     class: ../../../../Contexts/Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher
-    arguments: ['@Mechoui3.Shared.ConnectionManager']
+    arguments: ['@PricingService.Shared.ConnectionManager']
 
-  Mechoui3.Shared.CommandHandlers:
+  PricingService.Shared.CommandHandlers:
     class: ../../../../Contexts/Shared/infrastructure/CommandBus/CommandHandlers
     arguments: ['!tagged commandHandler']
 
-  Mechoui3.Shared.domain.CommandBus:
+  PricingService.Shared.domain.CommandBus:
     class: ../../../../Contexts/Shared/infrastructure/CommandBus/InMemoryCommandBus
-    arguments: ['@Mechoui3.Shared.CommandHandlers']
+    arguments: ['@PricingService.Shared.CommandHandlers']
 
-  Mechoui3.Shared.QueryHandlers:
+  PricingService.Shared.QueryHandlers:
     class: ../../../../Contexts/Shared/infrastructure/QueryBus/QueryHandlers
     arguments: ['!tagged queryHandler']
 
-  Mechoui3.Shared.domain.QueryBus:
+  PricingService.Shared.domain.QueryBus:
     class: ../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
-    arguments: ['@Mechoui3.Shared.QueryHandlers']
+    arguments: ['@PricingService.Shared.QueryHandlers']

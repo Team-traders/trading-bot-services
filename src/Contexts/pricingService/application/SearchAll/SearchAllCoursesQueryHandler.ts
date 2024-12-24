@@ -1,11 +1,11 @@
-import { Query } from '../../../../Shared/domain/Query';
-import { QueryHandler } from '../../../../Shared/domain/QueryHandler';
+import { Query } from '../../../Shared/domain/Query';
+import { QueryHandler } from '../../../Shared/domain/QueryHandler';
 import { BackofficeCoursesResponse } from '../BackofficeCoursesResponse';
 import { CoursesFinder } from './CoursesFinder';
 import { SearchAllCoursesQuery } from './SearchAllCoursesQuery';
 
 export class SearchAllCoursesQueryHandler implements QueryHandler<SearchAllCoursesQuery, BackofficeCoursesResponse> {
-  constructor(private readonly coursesFinder: CoursesFinder) {}
+  constructor(private readonly coursesFinder: CoursesFinder) { }
 
   subscribedTo(): Query {
     return SearchAllCoursesQuery;

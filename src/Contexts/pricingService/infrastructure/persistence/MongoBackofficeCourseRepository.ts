@@ -1,6 +1,6 @@
 import { Document, Filter, FindOptions } from 'mongodb';
-import { Criteria } from '../../../../Shared/domain/criteria/Criteria';
-import { MongoRepository } from '../../../../Shared/infrastructure/persistence/mongo/MongoRepository';
+import { Criteria } from '../../../Shared/domain/criteria/Criteria';
+import { MongoRepository } from '../../../Shared/infrastructure/persistence/mongo/MongoRepository';
 import { BackofficeCourse } from '../../domain/BackofficeCourse';
 import { BackofficeCourseRepository } from '../../domain/BackofficeCourseRepository';
 
@@ -12,8 +12,7 @@ interface CourseDocument extends Document {
 
 export class MongoBackofficeCourseRepository
   extends MongoRepository<BackofficeCourse>
-  implements BackofficeCourseRepository
-{
+  implements BackofficeCourseRepository {
   public save(course: BackofficeCourse): Promise<void> {
     return this.persist(course.id.value, course);
   }

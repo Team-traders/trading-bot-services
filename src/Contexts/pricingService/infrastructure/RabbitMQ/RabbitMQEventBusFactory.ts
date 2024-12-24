@@ -1,7 +1,7 @@
-import { DomainEventFailoverPublisher } from '../../../../Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher';
-import { RabbitMqConnection } from '../../../../Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection';
-import { RabbitMQEventBus } from '../../../../Shared/infrastructure/EventBus/RabbitMQ/RabbitMqEventBus';
-import { RabbitMQqueueFormatter } from '../../../../Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter';
+import { DomainEventFailoverPublisher } from '../../../Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher';
+import { RabbitMqConnection } from '../../../Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection';
+import { RabbitMQEventBus } from '../../../Shared/infrastructure/EventBus/RabbitMQ/RabbitMqEventBus';
+import { RabbitMQqueueFormatter } from '../../../Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter';
 import { RabbitMQConfig } from './RabbitMQConfigFactory';
 
 export class RabbitMQEventBusFactory {

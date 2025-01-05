@@ -3,10 +3,12 @@ services:
     class: ../../controllers/StatusGetController
     arguments: []
 
-  Apps.strategyService.controllers.CoursePutController:
-    class: ../../controllers/CoursePutController
-    arguments: ['@StrategyService.Shared.domain.CommandBus']
-
-  Apps.strategyService.controllers.CoursesCounterGetController:
-    class: ../../controllers/CoursesCounterGetController
+  Apps.strategyService.controllers.OrderGetController:
+    class: ../../controllers/OrderGetController
     arguments: ['@StrategyService.Shared.domain.QueryBus']
+
+  Apps.strategyService.controllers.OrderPostController:
+    class: ../../controllers/OrderPostController
+    arguments: ['@StrategyService.Shared.domain.QueryBus']
+
+

@@ -1,0 +1,14 @@
+services:
+
+  StrategyService.Orders.domain.OrderRepository:
+    class: ../../../../Contexts/strategyService/orders/infrastructure/persistence/MongoOrderRepository
+    arguments: ['@StrategyService.Shared.ConnectionManager']
+
+
+  StrategyService.orders.CreateOrdersCommandHandler:
+    class: ../../../../Contexts/strategyService/orders/domain/commandHandlers/OrderCommandHandler
+    arguments: ['@StrategyService.orders.domain.OrderRepository', '@AlertService.Shared.domain.EventBus']
+    tags:
+      - { name: 'commandHandler' }
+
+  

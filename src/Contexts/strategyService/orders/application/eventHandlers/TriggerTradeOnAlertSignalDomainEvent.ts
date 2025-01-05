@@ -6,7 +6,7 @@ import { EventBus } from '../../../../Shared/domain/EventBus';
 import { Order } from '../../domain/Order';
 
 
-export class TriggerOrderOnAlertDomainEvent
+export class TriggerTradeOnAlertDomainEvent
   implements DomainEventSubscriber<AlertTriggeredDomainEvent>
 {
 

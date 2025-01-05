@@ -27,7 +27,7 @@ export class MongoOrderRepository
   implements OrderRepository
 {
   public async save(order: Order): Promise<void> {
-    return this.persist(order._id.value, order);
+    return this.persist(order.id.value, order);
   }
 
   protected collectionName(): string {

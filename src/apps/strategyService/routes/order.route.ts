@@ -7,10 +7,10 @@ export const registerOrderRoutes = (): Router => {
   const router = Router();
 
   const orderPostController: OrderPostController = container.get(
-    'Apps.strategyService.controllers.AlertPostController',
+    'Apps.strategyService.controllers.OrderPostController',
   );
-  const alertsGetController: OrderGetController = container.get(
-    'Apps.strategyService.controllers.AlertGetController',
+  const orderGetController: OrderGetController = container.get(
+    'Apps.strategyService.controllers.OrderGetController',
   );
 
   router.post('/order', (req: Request, res: Response) =>
@@ -18,7 +18,7 @@ export const registerOrderRoutes = (): Router => {
   );
 
   router.get('/order', (req: Request, res: Response) =>
-    alertsGetController.run(req, res),
+    orderGetController.run(req, res),
   );
 
   return router;

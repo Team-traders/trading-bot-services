@@ -4,9 +4,9 @@ import { CommandBus } from '../../../Contexts/Shared/domain/CommandBus';
 import { Controller } from './Controller';
 import { CreateOrderCommand } from '../../../Contexts/strategyService/orders/domain/commands/CreateOrderCommand';
 
-type TradePostRequestParams = {};
-type TradePostRequestQuery = {};
-type TradePostRequestBody = {
+type OrderPostRequestParams = {};
+type OrderPostRequestQuery = {};
+type OrderPostRequestBody = {
   symbol: string;
   entryPrice: number;
   stopLoss: number;
@@ -14,21 +14,21 @@ type TradePostRequestBody = {
   tradeAmount: number;
 };
 
-type CreateTradeRequest<
-  Params = TradePostRequestParams,
-  Query = TradePostRequestQuery,
-  Body = TradePostRequestBody,
+type CreateOrderRequest<
+  Params = OrderPostRequestParams,
+  Query = OrderPostRequestQuery,
+  Body = OrderPostRequestBody,
 > = Request<Params, any, Body, Query>;
 
-export class TradePostController implements Controller {
+export class OrderPostController implements Controller {
   constructor(private commandBus: CommandBus) {}
 
-  async run(req: CreateTradeRequest, res: Response) {
+  async run(req: CreateOrderRequest, res: Response) {
     try {
       const { symbol, entryPrice, stopLoss, takeProfit, tradeAmount } =
         req.body;
 
-      const createTradeCommand = new CreateOrderCommand({
+      const createOrderCommand = new CreateOrderCommand({
         symbol,
         entryPrice,
         stopLoss,
@@ -36,8 +36,8 @@ export class TradePostController implements Controller {
         tradeAmount,
       });
 
-      // Inject command and command handlers
-      await this.commandBus.dispatch(createTradeCommand);
+      // Inject the command and command handlers
+      await this.commandBus.dispatch(createOrderCommand);
 
       res.status(httpStatus.CREATED).send();
     } catch (error) {

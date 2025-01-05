@@ -1,6 +1,6 @@
 import { Command } from '../../../../Shared/domain/Command';
 
-type CreateTradeCommandParams = {
+type CreateOrderCommandParams = {
   symbol: string;
   entryPrice: number;
   stopLoss: number;
@@ -21,7 +21,7 @@ export class CreateOrderCommand extends Command {
     stopLoss,
     takeProfit,
     tradeAmount,
-  }: CreateTradeCommandParams) {
+  }: CreateOrderCommandParams) {
     super();
     this.symbol = symbol;
     this.entryPrice = entryPrice;

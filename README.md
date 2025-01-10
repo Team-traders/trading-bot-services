@@ -23,6 +23,12 @@ The project follows an event-driven architecture, where each service listens to 
 
 ## How to Run the Project
 
+If you haven't installed the dependencies yet, run the following command:
+
+```bash
+npm install
+```
+
 To start the project, you can use the `run_project.sh` script located in the `/scripts` folder. This will launch all necessary services for the trading bot to work.
 
 ### Run the Project
@@ -33,6 +39,13 @@ cd /scripts
 ```
 
 This will initialize the bot and start fetching price data, managing alerts, executing trades, and sending notifications.
+
+## Running Unit Tests with Jest
+
+```bash
+npx jest
+```
+
 
 ### Stop the Project
 

@@ -9,6 +9,7 @@ export const registerOrderRoutes = (): Router => {
   const orderPostController: OrderPostController = container.get(
     'Apps.strategyService.controllers.OrderPostController',
   );
+
   const orderGetController: OrderGetController = container.get(
     'Apps.strategyService.controllers.OrderGetController',
   );

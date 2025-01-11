@@ -1,13 +1,12 @@
 services:
-
   StrategyService.orders.domain.OrderRepository:
     class: ../../../../Contexts/strategyService/orders/infrastructure/persistence/MongoOrderRepository
     arguments: ['@StrategyService.Shared.ConnectionManager']
 
 
   StrategyService.orders.CreateOrderCommandHandler:
-    class: ../../../../Contexts/strategyService/orders/domain/commandHandlers/OrderCommandHandler
-    arguments: ['@StrategyService.orders.domain.OrderRepository', '@AlertService.Shared.domain.EventBus']
+    class: ../../../../Contexts/strategyService/orders/domain/commandHandlers/CreateOrderCommandHandler
+    arguments: ['@StrategyService.orders.domain.OrderRepository', '@StrategyService.Shared.domain.EventBus']
     tags:
       - { name: 'commandHandler' }
 
@@ -16,6 +15,10 @@ services:
     arguments: ['@StrategyService.orders.domain.OrderRepository']
     tags:
       - { name: 'queryHandler' }
+
+  Apps.strategyService.controllers.OrderPostController:
+    class: ../../controllers/OrderPostController
+    arguments: ['@StrategyService.Shared.domain.CommandBus']
 
 
 

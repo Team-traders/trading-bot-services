@@ -1,6 +1,6 @@
 import { CommandHandler } from '../../../../Shared/domain/CommandHandler';
 import { Command } from '../../../../Shared/domain/Command';
-import { CreateOrderCommand } from '../../domain/commands/CreateOrderCommand';
+import { CreateOrderCommand } from '../commands/CreateOrderCommand';
 import { OrderStatus } from '../OrderObjectValues/Enums';
 import {
   Symbol,
@@ -8,7 +8,7 @@ import {
   StopLoss,
   TakeProfit,
   TradeAmount,
-} from '../../domain/OrderObjectValues/ValueObjects';
+} from '../OrderObjectValues/ValueObjects';
 import { OrderRepository } from '../OrderRepository';
 import { Order } from '../Order';
 import { EventBus } from '../../../../Shared/domain/EventBus';

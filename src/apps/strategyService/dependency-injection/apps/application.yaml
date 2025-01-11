@@ -9,6 +9,6 @@ services:
 
   Apps.strategyService.controllers.OrderPostController:
     class: ../../controllers/OrderPostController
-    arguments: ['@StrategyService.Shared.domain.QueryBus']
+    arguments: ['@StrategyService.Shared.domain.CommandBus']
 
 

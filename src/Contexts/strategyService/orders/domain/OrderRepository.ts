@@ -15,4 +15,5 @@ export interface OrderRepository {
     filter?: Filter<Document>,
     options?: DeleteOptions,
   ): Promise<DeleteResult>;
+  
 }

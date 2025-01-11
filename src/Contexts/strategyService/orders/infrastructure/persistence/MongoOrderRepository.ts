@@ -82,6 +82,7 @@ export class MongoOrderRepository
   ): Promise<DeleteResult> {
     const collection = await this.collection();
     const deleteResult = await collection.deleteOne(filter, options);
+    console.log(deleteResult)
     return deleteResult;
   }
 }

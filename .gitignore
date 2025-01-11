@@ -46,3 +46,8 @@ ehthumbs.db
 
 # Typescript cache
 .cache/
+
+src/apps/example/
+src/apps/mechoui3/
+src/Contexts/example/
+src/Contexts/mechoui3/

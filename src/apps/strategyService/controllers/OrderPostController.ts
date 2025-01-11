@@ -37,9 +37,9 @@ export class OrderPostController implements Controller {
       });
 
       // Inject the command and command handlers
-      await this.commandBus.dispatch(createOrderCommand);
+      const result = await this.commandBus.dispatch(createOrderCommand);
 
-      res.status(httpStatus.CREATED).send();
+      res.status(httpStatus.CREATED).send(result);
     } catch (error) {
       console.error(error);
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send();

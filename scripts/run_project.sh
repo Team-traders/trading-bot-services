@@ -17,12 +17,11 @@ yarn rabbitmq:init
 
 # Start development servers
 echo "Starting development servers..."
-yarn dev:mooc:backend &
 yarn dev:alertService:backend &
 yarn dev:strategyService:backend &
-yarn dev:mechoui3:backend &
-yarn dev:backoffice:backend &
-yarn dev:example:backend &
+yarn dev:notificationService:backend
+#yarn dev:pricingService:backend
+
 
 # Wait for all background jobs to complete (if desired)
 wait

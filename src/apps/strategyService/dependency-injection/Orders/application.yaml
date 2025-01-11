@@ -20,6 +20,16 @@ services:
     class: ../../controllers/OrderPostController
     arguments: ['@StrategyService.Shared.domain.CommandBus']
 
+  Apps.strategyService.controllers.OrderDeleteController:
+    class: ../../controllers/OrderDeleteController
+    arguments: ['@StrategyService.Shared.domain.CommandBus']
+
+  StrategyService.orders.DeleteOrderCommandHandler:
+    class: ../../../../Contexts/strategyService/orders/domain/commandHandlers/DeleteOrderCommandHandler
+    arguments: ['@StrategyService.orders.domain.OrderRepository']
+    tags:
+      - { name: 'commandHandler' }
+
 
 
 

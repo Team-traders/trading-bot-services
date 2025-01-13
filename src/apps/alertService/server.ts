@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node';
 import express, { Request, Response, Router } from 'express';
 import helmet from 'helmet';
 import * as http from 'http';
@@ -20,8 +21,10 @@ export class Server {
     router.use(registerRoutes());
     this.express.use(router);
 
+    Sentry.setupExpressErrorHandler(this.express);
+
     router.use((err: Error, req: Request, res: Response, next: Function) => {
-      console.log(err);
+      Sentry.captureException(err);
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message);
     });
   }

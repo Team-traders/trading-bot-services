@@ -1,3 +1,4 @@
+import './instrument';
 import { MoocBackendApp } from './MoocBackendApp';
 
 try {
@@ -7,7 +8,7 @@ try {
   process.exit(1);
 }
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
   console.log('uncaughtException', err);
   process.exit(1);
 });

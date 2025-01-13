@@ -7,8 +7,8 @@ services:
     class: ../../../../Contexts/Mooc/Courses/application/CourseCreator
     arguments: ['@TradeExecutionService.Courses.domain.CourseRepository', '@TradeExecutionService.Shared.domain.EventBus']
 
-  TradeExecutionService.courses.Boom:
-    class: ../../../../Contexts/tradeExecutionService/Courses/application/Create/Boom
+  TradeExecutionService.courses.ExecuteTradeOnTradeSignal:
+    class: ../../../../Contexts/tradeExecutionService/Courses/application/services/ExecuteTradeOnTradeSignal
     tags:
       - { name: 'domainEventSubscriber' }
 

@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import container from '../dependency-injection';
 import StatusController from '../controllers/StatusGetController';
 
@@ -8,8 +8,8 @@ export const registerStatusRoutes = (): Router => {
     'Apps.alertService.controllers.StatusGetController',
   );
 
-  router.get('/status', (req: Request, res: Response) =>
-    controller.run(req, res),
+  router.get('/status', (req: Request, res: Response, next: NextFunction) =>
+    controller.run(req, res, next),
   );
 
   return router;

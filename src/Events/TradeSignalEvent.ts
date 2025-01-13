@@ -2,7 +2,7 @@ import { DomainEvent } from "../Contexts/Shared/domain/DomainEvent";
 
 type TradeSignalDomainEventAttributes = {
   readonly symbol: string;
-  readonly action: string;
+  readonly action: 'BUY' | 'SELL';
   readonly entryPrice: number;
   readonly stopLoss: number;
   readonly takeProfit: number;
@@ -14,7 +14,7 @@ export class TradeSignalDomainEvent extends DomainEvent {
   static readonly EVENT_NAME = 'trade.signal';
 
   readonly symbol: string;
-  readonly action: string;
+  readonly action: 'BUY' | 'SELL';
   readonly entryPrice: number;
   readonly stopLoss: number;
   readonly takeProfit: number;
@@ -35,7 +35,7 @@ export class TradeSignalDomainEvent extends DomainEvent {
   }: {
     aggregateId: string;
     symbol: string;
-    action: string;
+    action: 'BUY' | 'SELL';
     entryPrice: number;
     stopLoss: number;
     takeProfit: number;

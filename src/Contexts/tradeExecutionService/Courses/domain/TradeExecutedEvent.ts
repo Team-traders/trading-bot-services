@@ -1,11 +1,10 @@
-import { DomainEvent } from "../Contexts/Shared/domain/DomainEvent";
+import { DomainEvent } from "../../../Shared/domain/DomainEvent";
 
 type TradeExecutedDomainEventAttributes = {
   readonly symbol: string;
   readonly executionPrice: number;
   readonly filledAmount: number;
   readonly status: string;
-  readonly strategyId: string;
   readonly tradeId: string;
   readonly timestamp: string;
 };
@@ -17,7 +16,6 @@ export class TradeExecutedDomainEvent extends DomainEvent {
   readonly executionPrice: number;
   readonly filledAmount: number;
   readonly status: string;
-  readonly strategyId: string;
   readonly tradeId: string;
   readonly timestamp: string;
 
@@ -27,7 +25,6 @@ export class TradeExecutedDomainEvent extends DomainEvent {
     executionPrice,
     filledAmount,
     status,
-    strategyId,
     tradeId,
     timestamp,
     eventId,
@@ -38,7 +35,6 @@ export class TradeExecutedDomainEvent extends DomainEvent {
     executionPrice: number;
     filledAmount: number;
     status: string;
-    strategyId: string;
     tradeId: string;
     timestamp: string;
     eventId?: string;
@@ -49,19 +45,17 @@ export class TradeExecutedDomainEvent extends DomainEvent {
     this.executionPrice = executionPrice;
     this.filledAmount = filledAmount;
     this.status = status;
-    this.strategyId = strategyId;
     this.tradeId = tradeId;
     this.timestamp = timestamp;
   }
 
   toPrimitives(): TradeExecutedDomainEventAttributes {
-    const { symbol, executionPrice, filledAmount, status, strategyId, tradeId, timestamp } = this;
+    const { symbol, executionPrice, filledAmount, status, tradeId, timestamp } = this;
     return {
       symbol,
       executionPrice,
       filledAmount,
       status,
-      strategyId,
       tradeId,
       timestamp,
     };
@@ -80,7 +74,6 @@ export class TradeExecutedDomainEvent extends DomainEvent {
       executionPrice: attributes.executionPrice,
       filledAmount: attributes.filledAmount,
       status: attributes.status,
-      strategyId: attributes.strategyId,
       tradeId: attributes.tradeId,
       timestamp: attributes.timestamp,
       eventId,

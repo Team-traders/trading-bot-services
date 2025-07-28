@@ -1,5 +1,5 @@
 import './instrument';
-import { MoocBackendApp } from './MoocBackendApp';
+import { MoocBackendApp } from './AlertBackendApp';
 
 try {
   new MoocBackendApp().start();

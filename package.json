@@ -70,6 +70,7 @@
     "nodemailer": "^6.9.16",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
+    "uuid": "^11.1.0",
     "winston": "^3.17.0"
   },
   "devDependencies": {

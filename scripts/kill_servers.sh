@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # List of ports to kill
-PORTS=(3000 3001 5001 5002 5003 5004)
+PORTS=(3000 3001 3005 5001 5002 5003 5004)
 
 echo "Killing processes running on ports: ${PORTS[*]}"
 

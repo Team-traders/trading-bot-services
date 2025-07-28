@@ -6,16 +6,19 @@ import { Controller } from './Controller';
 import { FindAlertsQuery } from '../../../Contexts/alertService/alerts/domain/queries/FindAlertsQuery';
 import { EventBus } from '../../../Contexts/Shared/domain/EventBus';
 import { FindAlertsResponse } from '../../../Contexts/alertService/alerts/application/queryHandlers/FindAlertsQueryHandler';
-import { PriceUpdateDomainEvent } from '../../../Events/PriceUpdateEvent';
+import { PriceUpdateDomainEvent } from '../../../Contexts/pricingService/domain/PriceUpdateEvent';
+import { LoggerPort } from '../../../Contexts/Shared/domain/Logger';
 
 export class AlertGetController implements Controller {
   constructor(
     private queryBus: QueryBus,
     private eventBus: EventBus,
+    private logger: LoggerPort,
   ) {}
 
   async run(req: Request, res: Response): Promise<void> {
     try {
+      this.logger.info(`"AlertGetController : " ${req.body}`);
       const query = new FindAlertsQuery();
       await this.eventBus.publish([
         new PriceUpdateDomainEvent({

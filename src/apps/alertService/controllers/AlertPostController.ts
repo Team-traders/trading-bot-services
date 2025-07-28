@@ -28,7 +28,7 @@ export class AlertPostController implements Controller {
       const { symbol, alertPrice, triggerCondition, emailTitle, emailMessage } =
         req.body;
 
-      const createCourseCommand = new CreateAlertCommand({
+      const createAlertCommand = new CreateAlertCommand({
         symbol,
         alertPrice,
         emailMessage,
@@ -37,7 +37,7 @@ export class AlertPostController implements Controller {
       });
 
       //inject command and command handlers
-      await this.commandBus.dispatch(createCourseCommand);
+      await this.commandBus.dispatch(createAlertCommand);
 
       res.status(httpStatus.CREATED).send();
     } catch (error) {

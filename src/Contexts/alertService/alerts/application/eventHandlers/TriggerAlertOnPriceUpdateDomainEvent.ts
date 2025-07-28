@@ -2,7 +2,7 @@ import { AlertTriggeredDomainEvent } from '../../../../../Events/AlertTriggeredE
 import {
   PriceUpdateData,
   PriceUpdateDomainEvent,
-} from '../../../../../Events/PriceUpdateEvent';
+} from '../../../../../Contexts/pricingService/domain/PriceUpdateEvent';
 import { DomainEventClass } from '../../../../Shared/domain/DomainEvent';
 import { DomainEventSubscriber } from '../../../../Shared/domain/DomainEventSubscriber';
 import { EventBus } from '../../../../Shared/domain/EventBus';
@@ -88,6 +88,7 @@ export class TriggerAlertOnPriceUpdateDomainEvent
 
   private async processMatchingAlerts(alerts: Alert[]): Promise<void> {
     const events = alerts.map((alert) => this.createAlertTriggeredEvent(alert));
+    console.log('events', events);
     await this.eventBus.publish(events);
 
     for (const alert of alerts) {

@@ -7,12 +7,13 @@ type DomainEventJSON = {
   attributes: string;
   id: string;
   occurred_on: string;
+  metadata: Record<string, unknown>;
 };
 
 export class DomainEventDeserializer extends Map<string, DomainEventClass> {
   static configure(subscribers: DomainEventSubscribers) {
     const mapping = new DomainEventDeserializer();
-    subscribers.items.forEach(subscriber => {
+    subscribers.items.forEach((subscriber) => {
       subscriber.subscribedTo().forEach(mapping.registerEvent.bind(mapping));
     });
 
@@ -26,7 +27,8 @@ export class DomainEventDeserializer extends Map<string, DomainEventClass> {
 
   deserialize(event: string) {
     const eventData = JSON.parse(event).data as DomainEventJSON;
-    const { type, aggregateId, attributes, id, occurred_on } = eventData;
+    const { type, aggregateId, attributes, id, occurred_on, metadata } =
+      eventData;
     const eventClass = super.get(type);
 
     if (!eventClass) {
@@ -37,7 +39,8 @@ export class DomainEventDeserializer extends Map<string, DomainEventClass> {
       aggregateId,
       attributes,
       occurredOn: new Date(occurred_on),
-      eventId: id
+      eventId: id,
+      metadata: metadata,
     });
   }
 }

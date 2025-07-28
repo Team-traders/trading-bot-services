@@ -43,6 +43,6 @@ services:
       - { name: 'commandHandler' }
   AlertService.courses.FindAlertsQueryHandler:
     class: ../../../../Contexts/alertService/alerts/application/queryHandlers/FindAlertsQueryHandler
-    arguments: ['@AlertService.alerts.domain.AlertRepository']
+    arguments: ['@AlertService.alerts.domain.AlertRepository', '@AlertService.Shared.domain.Logger']
     tags:
       - { name: 'queryHandler' }

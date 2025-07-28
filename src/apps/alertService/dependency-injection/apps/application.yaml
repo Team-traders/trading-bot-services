@@ -17,4 +17,4 @@ services:
 
   Apps.alertService.controllers.AlertGetController:
     class: ../../controllers/AlertGetController
-    arguments: ['@AlertService.Shared.domain.QueryBus', '@AlertService.Shared.domain.EventBus']
+    arguments: ['@AlertService.Shared.domain.QueryBus', '@AlertService.Shared.domain.EventBus', "@AlertService.Shared.domain.Logger"]

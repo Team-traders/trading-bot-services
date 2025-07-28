@@ -1,3 +1,4 @@
+import { LoggerPort } from '../../../../Shared/domain/Logger';
 import { Query } from '../../../../Shared/domain/Query';
 import { QueryHandler } from '../../../../Shared/domain/QueryHandler';
 import { AlertRepository } from '../../domain/AlertRepository';
@@ -19,13 +20,17 @@ export type FindAlertsResponse = {
 export class FindAlertsQueryHandler
   implements QueryHandler<FindAlertsQuery, FindAlertsResponse[]>
 {
-  constructor(private alertRepo: AlertRepository) {}
+  constructor(
+    private alertRepo: AlertRepository,
+    private logger: LoggerPort,
+  ) {}
 
   subscribedTo(): Query {
     return FindAlertsQuery;
   }
 
   async handle(_query: FindAlertsQuery): Promise<FindAlertsResponse[]> {
+    this.logger.info(`"FindAlertsQueryHandler : " ${_query}`);
     try {
       const alerts = await this.alertRepo.find();
       return alerts.map((alert) => alert.toPrimitives());

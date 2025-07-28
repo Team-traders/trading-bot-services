@@ -1,4 +1,4 @@
-import { DomainEvent } from '../Contexts/Shared/domain/DomainEvent';
+import { DomainEvent } from '../../Shared/domain/DomainEvent';
 
 export type PriceUpdateData = {
   readonly symbol: string;
@@ -19,17 +19,20 @@ export class PriceUpdateDomainEvent extends DomainEvent {
     data,
     eventId,
     occurredOn,
+    metadata,
   }: {
     aggregateId?: string;
     data: PriceUpdateData[];
     eventId?: string;
     occurredOn?: Date;
+    metadata?: Record<string, unknown>;
   }) {
     super({
       eventName: PriceUpdateDomainEvent.EVENT_NAME,
       aggregateId,
       eventId,
       occurredOn,
+      metadata,
     });
     this.data = data;
   }
@@ -46,13 +49,15 @@ export class PriceUpdateDomainEvent extends DomainEvent {
     attributes: PriceUpdateDomainEventAttributes;
     eventId: string;
     occurredOn: Date;
+    metadata?: Record<string, unknown>;
   }): DomainEvent {
-    const { aggregateId, attributes, occurredOn, eventId } = params;
+    const { aggregateId, attributes, occurredOn, eventId, metadata } = params;
     return new PriceUpdateDomainEvent({
       aggregateId,
       data: attributes.data,
       eventId,
       occurredOn,
+      metadata,
     });
   }
 }

@@ -14,6 +14,5 @@ stop_container() {
 
 # Stop MongoDB and RabbitMQ containers
 echo "Stopping Docker containers..."
-stop_container "mongodb"
-stop_container "rabbitmq"
+docker compose down
 echo "Docker containers stopped."

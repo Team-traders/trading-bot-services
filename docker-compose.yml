@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    restart: unless-stopped
+# Optional: Add volumes for data persistence
+# Uncomment the following lines if you want to persist data
+# volumes:
+#   mongodb_data:
+#   rabbitmq_data:

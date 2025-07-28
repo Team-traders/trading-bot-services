@@ -14,6 +14,5 @@ function Stop-Container {
 
 # Stop MongoDB and RabbitMQ containers
 Write-Output "Stopping Docker containers..."
-Stop-Container "mongodb"
-Stop-Container "rabbitmq"
+docker compose down
 Write-Output "Docker containers stopped."

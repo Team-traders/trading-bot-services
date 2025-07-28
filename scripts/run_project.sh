@@ -4,8 +4,8 @@
 set -e
 
 # Initialize Docker containers
-echo "Initializing Docker containers..."
-./scripts/init_docker.sh
+echo "Initializing Docker containers MongoDB and RabbitMQ..."
+docker compose up
 
 # Wait for RabbitMQ and MongoDB to initialize
 echo "Waiting for services to initialize..."

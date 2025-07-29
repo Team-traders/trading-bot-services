@@ -13,6 +13,6 @@ export class Boom implements DomainEventSubscriber<AlertTriggeredDomainEvent> {
   async on(domainEvent: AlertTriggeredDomainEvent): Promise<void> {
     const result = await this.repo.find();
     console.log('alertService.com', domainEvent.symbol, domainEvent.alertPrice);
-    console.log('alert service results : ', result.length);
+    //console.log('alert service results : ', result.length);
   }
 }

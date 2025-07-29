@@ -25,7 +25,7 @@ services:
   
   AlertService.courses.TriggerAlertOnPriceUpdateDomainEvent:
    class: ../../../../Contexts/alertService/alerts/application/eventHandlers/TriggerAlertOnPriceUpdateDomainEvent
-   arguments: ['@AlertService.alerts.domain.AlertRepository', '@AlertService.Shared.domain.EventBus']
+   arguments: ['@AlertService.alerts.domain.AlertRepository', '@AlertService.Shared.domain.EventBus', '@AlertService.Shared.domain.CorrelationIdService', '@AlertService.Shared.domain.Logger']
    tags:
      - { name: 'domainEventSubscriber' }
 

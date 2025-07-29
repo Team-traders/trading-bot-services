@@ -1,5 +1,7 @@
 import { DomainEvent } from '../../../domain/DomainEvent';
 import { EventBus } from '../../../domain/EventBus';
+// import { LoggerPort } from '../../../domain/Logger';
+// import { CorrelationIdService } from '../../CorrelationIdService';
 import { DomainEventDeserializer } from '../DomainEventDeserializer';
 import { DomainEventFailoverPublisher } from '../DomainEventFailoverPublisher/DomainEventFailoverPublisher';
 import { DomainEventJsonSerializer } from '../DomainEventJsonSerializer';
@@ -14,6 +16,8 @@ export class RabbitMQEventBus implements EventBus {
   private exchange: string;
   private queueNameFormatter: RabbitMQqueueFormatter;
   private maxRetries: Number;
+  // private correlationIdService: CorrelationIdService;
+  // private logger: LoggerPort;
 
   constructor(params: {
     failoverPublisher: DomainEventFailoverPublisher;
@@ -21,24 +25,45 @@ export class RabbitMQEventBus implements EventBus {
     exchange: string;
     queueNameFormatter: RabbitMQqueueFormatter;
     maxRetries: Number;
+    // correlationIdService: CorrelationIdService;
+    // logger: LoggerPort;
   }) {
-    const { failoverPublisher, connection, exchange } = params;
+    const {
+      failoverPublisher,
+      connection,
+      exchange,
+      // correlationIdService,
+      // logger,
+    } = params;
     this.failoverPublisher = failoverPublisher;
     this.connection = connection;
     this.exchange = exchange;
     this.queueNameFormatter = params.queueNameFormatter;
     this.maxRetries = params.maxRetries;
+    // this.correlationIdService = correlationIdService;
+    // this.logger = logger;
   }
 
   async addSubscribers(subscribers: DomainEventSubscribers): Promise<void> {
     const deserializer = DomainEventDeserializer.configure(subscribers);
-    const consumerFactory = new RabbitMQConsumerFactory(deserializer, this.connection, this.maxRetries);
+    const consumerFactory = new RabbitMQConsumerFactory(
+      deserializer,
+      this.connection,
+      this.maxRetries,
+    );
 
     for (const subscriber of subscribers.items) {
       const queueName = this.queueNameFormatter.format(subscriber);
-      const rabbitMQConsumer = consumerFactory.build(subscriber, this.exchange, queueName);
+      const rabbitMQConsumer = consumerFactory.build(
+        subscriber,
+        this.exchange,
+        queueName,
+      );
 
-      await this.connection.consume(queueName, rabbitMQConsumer.onMessage.bind(rabbitMQConsumer));
+      await this.connection.consume(
+        queueName,
+        rabbitMQConsumer.onMessage.bind(rabbitMQConsumer),
+      );
     }
   }
 
@@ -49,7 +74,12 @@ export class RabbitMQEventBus implements EventBus {
         const content = this.toBuffer(event);
         const options = this.options(event);
 
-        await this.connection.publish({ exchange: this.exchange, routingKey, content, options });
+        await this.connection.publish({
+          exchange: this.exchange,
+          routingKey,
+          content,
+          options,
+        });
       } catch (error: any) {
         await this.failoverPublisher.publish(event);
       }
@@ -60,7 +90,7 @@ export class RabbitMQEventBus implements EventBus {
     return {
       messageId: event.eventId,
       contentType: 'application/json',
-      contentEncoding: 'utf-8'
+      contentEncoding: 'utf-8',
     };
   }
 

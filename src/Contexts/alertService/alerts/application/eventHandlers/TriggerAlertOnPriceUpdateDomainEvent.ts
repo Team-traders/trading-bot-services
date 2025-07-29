@@ -9,6 +9,8 @@ import { EventBus } from '../../../../Shared/domain/EventBus';
 import { Alert } from '../../domain/Alert';
 import { AlertRepository } from '../../domain/AlertRepository';
 import { AlertStatus } from '../../domain/AlertValueObjects/Enums';
+import { CorrelationIdService } from '../../../../Shared/infrastructure/CorrelationIdService';
+import { LoggerPort } from '../../../../Shared/domain/Logger';
 
 export class TriggerAlertOnPriceUpdateDomainEvent
   implements DomainEventSubscriber<PriceUpdateDomainEvent>
@@ -18,6 +20,8 @@ export class TriggerAlertOnPriceUpdateDomainEvent
   constructor(
     private readonly alertRepository: AlertRepository,
     private readonly eventBus: EventBus,
+    private readonly correlationIdService: CorrelationIdService,
+    private readonly logger: LoggerPort,
   ) {}
 
   subscribedTo(): DomainEventClass[] {
@@ -25,27 +29,57 @@ export class TriggerAlertOnPriceUpdateDomainEvent
   }
 
   async on(domainEvent: PriceUpdateDomainEvent): Promise<void> {
+    // Generate correlation ID for this price update operation
+    const correlationId = this.correlationIdService.generateCorrelationId();
+    this.correlationIdService.setCorrelationIdForAsync(correlationId);
+
+    const loggerWithContext = this.logger.withContext(
+      'TriggerAlertOnPriceUpdate',
+    );
+
+    console.log('hello --------');
+    loggerWithContext.info('Processing price update event', {
+      priceCount: domainEvent.data.length,
+      correlationId,
+    });
+
     const prices = domainEvent.data;
     const priceBatches = this.chunkArray(prices, this.BATCH_SIZE);
 
     for (const batch of priceBatches) {
       try {
         // find alerts and trigger them if available
-        await this.processPriceBatch(batch);
+        await this.processPriceBatch(batch, loggerWithContext);
       } catch (error) {
-        this.handleBatchProcessingError(batch, error);
+        this.handleBatchProcessingError(batch, error, loggerWithContext);
       }
     }
   }
 
-  private async processPriceBatch(prices: PriceUpdateData[]): Promise<void> {
+  private async processPriceBatch(
+    prices: PriceUpdateData[],
+    logger: LoggerPort,
+  ): Promise<void> {
     const alertGenerator = this.generateMatchingAlerts(prices);
 
     for await (const alerts of alertGenerator) {
       if (alerts.length > 0) {
+        // Create sub-correlation ID for this specific alert processing
+        const alertProcessingCorrelationId = `${this.correlationIdService.getCorrelationId()}-ALERTS-${Date.now()}`;
+        this.correlationIdService.setCorrelationIdForAsync(
+          alertProcessingCorrelationId,
+        );
+
+        const alertLogger = logger.withContext('AlertProcessing');
+
+        alertLogger.info('Processing matching alerts', {
+          alertCount: alerts.length,
+          symbols: [...new Set(alerts.map((a) => a.symbol))],
+          correlationId: alertProcessingCorrelationId,
+        });
+
         //publish events and updates alert's status
-        await this.processMatchingAlerts(alerts);
-        console.log(`Triggered ${alerts.length} alert(s) !`);
+        await this.processMatchingAlerts(alerts, alertLogger);
       }
     }
   }
@@ -86,18 +120,29 @@ export class TriggerAlertOnPriceUpdateDomainEvent
     ]);
   }
 
-  private async processMatchingAlerts(alerts: Alert[]): Promise<void> {
+  private async processMatchingAlerts(
+    alerts: Alert[],
+    logger: LoggerPort,
+  ): Promise<void> {
     const events = alerts.map((alert) => this.createAlertTriggeredEvent(alert));
-    console.log('events', events);
+
+    // Publish events with correlation ID propagation
     await this.eventBus.publish(events);
 
     for (const alert of alerts) {
-      await this.handleAlertStatusChange(alert);
+      try {
+        await this.handleAlertStatusChange(alert);
+      } catch (error) {
+        logger.error('Error processing alert status change', error as Error, {
+          alertId: alert.id,
+          symbol: alert.symbol,
+        });
+      }
     }
   }
 
   private async handleAlertStatusChange(alert: Alert): Promise<void> {
-    const linkedOrderId = alert.toPrimitives().linkedOrderId;
+    const linkedOrderId = alert.toPrimitives()?.linkedOrderId;
     let linkedAlerts: Alert[] = [];
 
     if (linkedOrderId) {
@@ -155,10 +200,11 @@ export class TriggerAlertOnPriceUpdateDomainEvent
   private handleBatchProcessingError(
     batch: PriceUpdateData[],
     error: unknown,
+    logger: LoggerPort,
   ): void {
-    console.error('Error processing price batch:', {
-      batch,
-      error,
+    logger.error('Error processing price batch', error as Error, {
+      batchSymbols: batch.map((p) => p.symbol),
+      batchSize: batch.length,
     });
   }
 }

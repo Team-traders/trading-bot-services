@@ -18,7 +18,9 @@ services:
         '@AlertService.Shared.DomainEventFailoverPublisher',
         '@AlertService.Shared.RabbitMQConnection',
         '@AlertService.Shared.RabbitMQqueueFormatter',
-        '@AlertService.Shared.RabbitMQConfig'
+        '@AlertService.Shared.RabbitMQConfig',
+        '@AlertService.Shared.domain.CorrelationIdService',
+        '@AlertService.Shared.domain.Logger'
       ]
 
   AlertService.Shared.ConnectionManager:

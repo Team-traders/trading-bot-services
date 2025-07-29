@@ -11,7 +11,7 @@ export class MarketPriceFetcher {
     private marketClient: MarketClient,
   ) {
     this.cronJob = new CronJob(
-      '*/1 * * * *',
+      '*/30 * * * * *',
       this.fetchAndPublishPrices.bind(this),
     );
   }
@@ -19,9 +19,11 @@ export class MarketPriceFetcher {
   private async fetchAndPublishPrices(): Promise<void> {
     try {
       const prices = await this.marketClient.fetchMarketPrices();
+      console.log(prices[0]);
       await this.eventBus.publish([
         new PriceUpdateDomainEvent({ data: prices }),
       ]);
+      console.log('events emmited');
     } catch (error) {
       console.error('Error fetching market prices:', error);
     }

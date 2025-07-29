@@ -13,17 +13,22 @@ import {
 } from '../../domain/AlertValueObjects/Enums';
 import { AlertRepository } from '../../domain/AlertRepository';
 import { Alert } from '../../domain/Alert';
+import { LoggerPort } from '../../../../Shared/domain/Logger';
 
 export class CreateAlertCommandHandler
   implements CommandHandler<CreateAlertCommand>
 {
-  constructor(private alertRepo: AlertRepository) {}
+  constructor(
+    private alertRepo: AlertRepository,
+    private logger: LoggerPort,
+  ) {}
 
   subscribedTo(): Command {
     return CreateAlertCommand;
   }
 
   async handle(command: CreateAlertCommand): Promise<void> {
+    this.logger.info(`"CreateAlertCommandHandler : " ${command}`);
     const symbol = new Symbol(command.symbol);
     const alertPrice = new AlertPrice(command.alertPrice);
     const triggerCondition = new TriggerCondition(

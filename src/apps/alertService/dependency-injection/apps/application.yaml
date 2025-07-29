@@ -9,7 +9,7 @@ services:
 
   Apps.alertService.controllers.AlertPostController:
     class: ../../controllers/AlertPostController
-    arguments: ['@AlertService.Shared.domain.CommandBus']
+    arguments: ['@AlertService.Shared.domain.CommandBus', '@AlertService.Shared.domain.Logger']
 
   Apps.alertService.controllers.CoursesCounterGetController:
     class: ../../controllers/CoursesCounterGetController
@@ -17,4 +17,4 @@ services:
 
   Apps.alertService.controllers.AlertGetController:
     class: ../../controllers/AlertGetController
-    arguments: ['@AlertService.Shared.domain.QueryBus', '@AlertService.Shared.domain.EventBus', "@AlertService.Shared.domain.Logger"]
+    arguments: ['@AlertService.Shared.domain.QueryBus', '@AlertService.Shared.domain.EventBus', '@AlertService.Shared.domain.Logger']

@@ -41,7 +41,7 @@ export class AlertGetController implements Controller {
       if (e instanceof CoursesCounterNotExist) {
         res.sendStatus(httpStatus.NOT_FOUND);
       } else {
-        console.log(e);
+        this.logger.error(`"AlertGetController : " ${e}`);
         res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
       }
     }

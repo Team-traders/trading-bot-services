@@ -3,6 +3,7 @@ import { StatusCodes as httpStatus } from 'http-status-codes';
 import { CommandBus } from '../../../Contexts/Shared/domain/CommandBus';
 import { Controller } from './Controller';
 import { CreateAlertCommand } from '../../../Contexts/alertService/alerts/domain/commands/CreateAlertCommand';
+import { LoggerPort } from '../../../Contexts/Shared/domain/Logger';
 
 type AlertPostRequestParams = {};
 type AlertPostRequestQuery = {};
@@ -21,9 +22,13 @@ type CreateAlertRequest<
 > = Request<Params, any, Body, Query>;
 
 export class AlertPostController implements Controller {
-  constructor(private commandBus: CommandBus) {}
+  constructor(
+    private commandBus: CommandBus,
+    private logger: LoggerPort,
+  ) {}
 
   async run(req: CreateAlertRequest, res: Response) {
+    this.logger.info(`"AlertPostController : " ${req.body}`);
     try {
       const { symbol, alertPrice, triggerCondition, emailTitle, emailMessage } =
         req.body;
@@ -41,7 +46,7 @@ export class AlertPostController implements Controller {
 
       res.status(httpStatus.CREATED).send();
     } catch (error) {
-      console.log(error);
+      this.logger.error(`"AlertPostController : " ${req.body}`);
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send();
     }
   }

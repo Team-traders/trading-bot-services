@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 
 # Initialize Docker containers
 Write-Output "Initializing Docker containers..."
-& docker compose up
+& docker compose up -d
 
 # Wait for RabbitMQ and MongoDB to initialize
 Write-Output "Waiting for services to initialize..."

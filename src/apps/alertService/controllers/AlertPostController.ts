@@ -46,7 +46,7 @@ export class AlertPostController implements Controller {
 
       res.status(httpStatus.CREATED).send();
     } catch (error) {
-      this.logger.error(`"AlertPostController : " ${req.body}`);
+      this.logger.error(`"AlertPostController : " ${error}`);
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send();
     }
   }
